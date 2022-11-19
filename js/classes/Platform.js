@@ -17,6 +17,11 @@ class Platform {
       this.tileSize
     );
   }
+  loadImg() {
+    this.img.onload = () => {
+      console.log("loaded");
+    }
+  }
   drawBox() {
     // this.ctx.fillStyle = "red";
     // this.ctx.fillRect(

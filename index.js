@@ -17,7 +17,7 @@ const player = new Player({
     y: 0,
   },
   color: "red",
-  imageSrc: "/spritesheet/blue_witch/B_witch_idle.png",
+  imageSrc: "spritesheet/blue_witch/B_witch_idle.png",
   frames: 6,
   scale: 3,
   offset: {
@@ -26,42 +26,44 @@ const player = new Player({
   },
   sprites: {
     idle: {
-      imageSrc: "/spritesheet/blue_witch/B_witch_idle.png",
+      imageSrc: "spritesheet/blue_witch/B_witch_idle.png",
       frames: 6,
     },
     run: {
-      imageSrc: "/spritesheet/blue_witch/B_witch_run.png",
+      imageSrc: "spritesheet/blue_witch/B_witch_run.png",
       frames: 8,
     },
     run_left: {
-      imageSrc: "/spritesheet/blue_witch/B_witch_run_left.png",
+      imageSrc: "spritesheet/blue_witch/B_witch_run_left.png",
       frames: 8,
     },
     charge: {
-      imageSrc: "/spritesheet/blue_witch/B_witch_charge.png",
+      imageSrc: "spritesheet/blue_witch/B_witch_charge.png",
       frames: 5,
     },
     idle_charged: {
-      imageSrc: "/spritesheet/blue_witch/B_witch_idle_charged.png",
+      imageSrc: "spritesheet/blue_witch/B_witch_idle_charged.png",
       frames: 6,
     },
     run_left_charged: {
-      imageSrc: "/spritesheet/blue_witch/B_witch_run_left_charged.png",
+      imageSrc: "spritesheet/blue_witch/B_witch_run_left_charged.png",
       frames: 8,
     },
     run_charged: {
-      imageSrc: "/spritesheet/blue_witch/B_witch_run_charged.png",
+      imageSrc: "spritesheet/blue_witch/B_witch_run_charged.png",
       frames: 8,
     },
   },
 });
+
+console.log(player.sprites);
 
 const platform = new Platform({
   position: {
     x: 100,
     y: canvas.height - tileSize,
   },
-  imageSrc: "/spritesheet/platforms/flat-platform.png",
+  imageSrc: "spritesheet/platforms/flat-platform.png",
   tiles: 5,
 });
 
@@ -71,7 +73,7 @@ const platforms = [
       x: 100,
       y: canvas.height - tileSize,
     },
-    imageSrc: "/spritesheet/platforms/flat-platform.png",
+    imageSrc: "spritesheet/platforms/flat-platform.png",
     tiles: 5,
   }),
   new Platform({
@@ -79,7 +81,7 @@ const platforms = [
       x: 400,
       y: canvas.height - tileSize,
     },
-    imageSrc: "/spritesheet/platforms/flat-platform.png",
+    imageSrc: "spritesheet/platforms/flat-platform.png",
     tiles: 5,
   }),
   new Platform({
@@ -87,10 +89,11 @@ const platforms = [
       x: 500,
       y: canvas.height - tileSize - 200,
     },
-    imageSrc: "/spritesheet/platforms/flat-platform.png",
+    imageSrc: "spritesheet/platforms/flat-platform.png",
     tiles: 5,
   }),
 ];
+
 
 function createImage(imageSrc){
   const image = new Image();
@@ -126,6 +129,9 @@ const backgrounds = [
   }),
 ]
 
+
+player.load();
+platform.loadImg();
 let keys = {
   a: { pressed: false },
   d: { pressed: false },

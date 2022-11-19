@@ -12,18 +12,23 @@ class Sprite {
     this.offset = offset;
     this.scale = scale;
   }
+  load() {
+    this.img.onload = () => {
+      console.log('player-sprite loaded');
+    }
+  }
   draw() {
-    ctx.drawImage(
-      this.img,
-      0,
-      this.currentFrame * (this.img.height / this.frames) + this.offset.y,
-      this.img.width,
-      this.img.height / this.frames,
-      this.position.x + this.offset.x,
-      this.position.y,
-      this.img.width * this.scale,
-      (this.img.height / this.frames) * this.scale
-    );
+      ctx.drawImage(
+        this.img,
+        0,
+        this.currentFrame * (this.img.height / this.frames) + this.offset.y,
+        this.img.width,
+        this.img.height / this.frames,
+        this.position.x + this.offset.x,
+        this.position.y,
+        this.img.width * this.scale,
+        (this.img.height / this.frames) * this.scale
+      );
   }
 
   animateFrames() {
@@ -116,8 +121,8 @@ class Player extends Sprite {
       }
     });
 
-    if(this.position.y + height > canvas.width) {
-      console.log('dead');
+    if (this.position.y + height > canvas.width) {
+      console.log("dead");
       this.dead = true;
     }
 
@@ -142,7 +147,7 @@ class Player extends Sprite {
 
     this.animateFrames();
     this.position.x += this.velocity.x;
-    if(!this.grounded) this.gravitySpeed += this.gravity;
+    if (!this.grounded) this.gravitySpeed += this.gravity;
     this.velocity.y += this.gravitySpeed;
     this.hitGround();
     this.position.y += this.velocity.y;

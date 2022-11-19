@@ -2,7 +2,7 @@
   "name": "multimedia-authoring-2",
   "version": "1.0.0",
   "description": "Simple Platformer made with Vanilla JavaScript",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

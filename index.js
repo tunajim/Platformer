@@ -5,6 +5,8 @@ const ctx = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 576;
 
+let loaded = false;
+
 player.load();
 platform.load();
 enemy1.load();

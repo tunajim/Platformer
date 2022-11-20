@@ -58,7 +58,7 @@ const platform = new Platform({
     x: 100,
     y: canvas.height - tileSize,
   },
-  imageSrc: "~/spritesheet/platforms/flat-platform.png",
+  imageSrc: "spritesheet/platforms/flat-platform.png",
   tiles: 5,
 });
 
@@ -122,7 +122,7 @@ const enemy1 = new Enemy({
         x: 0,
         y: 0
     },
-    imageSrc: "~/spritesheet/reaper-right/idle.png",
+    imageSrc: "spritesheet/reaper-right/idle.png",
     frames: 2,
     scale: 1,
     offset: {

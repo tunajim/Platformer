@@ -12,7 +12,7 @@ const player = new Player({
     y: 0,
   },
   color: "red",
-  imageSrc: "../../spritesheet/blue_witch/B_witch_idle.png",
+  imageSrc: "~/spritesheet/blue_witch/B_witch_idle.png",
   frames: 6,
   scale: 3,
   offset: {
@@ -21,31 +21,31 @@ const player = new Player({
   },
   sprites: {
     idle: {
-      imageSrc: "../../spritesheet/blue_witch/B_witch_idle.png",
+      imageSrc: "~/spritesheet/blue_witch/B_witch_idle.png",
       frames: 6,
     },
     run: {
-      imageSrc: "../../spritesheet/blue_witch/B_witch_run.png",
+      imageSrc: "~/spritesheet/blue_witch/B_witch_run.png",
       frames: 8,
     },
     run_left: {
-      imageSrc: "../../spritesheet/blue_witch/B_witch_run_left.png",
+      imageSrc: "~/spritesheet/blue_witch/B_witch_run_left.png",
       frames: 8,
     },
     charge: {
-      imageSrc: "../../spritesheet/blue_witch/B_witch_charge.png",
+    imageSrc: "~/spritesheet/blue_witch/B_witch_charge.png",
       frames: 5,
     },
     idle_charged: {
-      imageSrc: "../../spritesheet/blue_witch/B_witch_idle_charged.png",
+      imageSrc: "~/spritesheet/blue_witch/B_witch_idle_charged.png",
       frames: 6,
     },
     run_left_charged: {
-      imageSrc: "../../spritesheet/blue_witch/B_witch_run_left_charged.png",
+      imageSrc: "~/spritesheet/blue_witch/B_witch_run_left_charged.png",
       frames: 8,
     },
     run_charged: {
-      imageSrc: "../../spritesheet/blue_witch/B_witch_run_charged.png",
+      imageSrc: "~/spritesheet/blue_witch/B_witch_run_charged.png",
       frames: 8,
     },
 
@@ -58,7 +58,7 @@ const platform = new Platform({
     x: 100,
     y: canvas.height - tileSize,
   },
-  imageSrc: "../spritesheet/platforms/flat-platform.png",
+  imageSrc: "~/spritesheet/platforms/flat-platform.png",
   tiles: 5,
 });
 
@@ -68,7 +68,7 @@ const platforms = [
       x: 100,
       y: canvas.height - tileSize,
     },
-    imageSrc: "../spritesheet/platforms/flat-platform.png",
+    imageSrc: "~/spritesheet/platforms/flat-platform.png",
     tiles: 5,
   }),
   new Platform({
@@ -76,7 +76,7 @@ const platforms = [
       x: 400,
       y: canvas.height - tileSize,
     },
-    imageSrc: "../spritesheet/platforms/flat-platform.png",
+    imageSrc: "~/spritesheet/platforms/flat-platform.png",
     tiles: 5,
   }),
   new Platform({
@@ -84,7 +84,7 @@ const platforms = [
       x: 725,
       y: canvas.height - tileSize - 100,
     },
-    imageSrc: "../spritesheet/platforms/flat-platform.png",
+    imageSrc: "~/spritesheet/platforms/flat-platform.png",
     tiles: 1,
   }),
   new Platform({
@@ -92,7 +92,7 @@ const platforms = [
       x: 850,
       y: canvas.height - tileSize - 100,
     },
-    imageSrc: "../spritesheet/platforms/flat-platform.png",
+    imageSrc: "~/spritesheet/platforms/flat-platform.png",
     tiles: 1,
   }),
   new Platform({
@@ -100,7 +100,7 @@ const platforms = [
       x: 1000,
       y: canvas.height - tileSize - 200,
     },
-    imageSrc: "../spritesheet/platforms/flat-platform.png",
+    imageSrc: "~/spritesheet/platforms/flat-platform.png",
     tiles: 5,
   }),
   new Platform({
@@ -108,7 +108,7 @@ const platforms = [
       x: 1250,
       y: canvas.height - tileSize - 200,
     },
-    imageSrc: "../spritesheet/platforms/flat-platform.png",
+    imageSrc: "~/spritesheet/platforms/flat-platform.png",
     tiles: 2,
   }),
 ];
@@ -122,7 +122,7 @@ const enemy1 = new Enemy({
         x: 0,
         y: 0
     },
-    imageSrc: "../spritesheet/reaper-right/idle.png",
+    imageSrc: "~/spritesheet/reaper-right/idle.png",
     frames: 2,
     scale: 1,
     offset: {
@@ -131,7 +131,7 @@ const enemy1 = new Enemy({
     },
     sprites: {
         right: {
-            imageSrc: "../spritesheet/reaper-right/idle.png",
+            imageSrc: "~/spritesheet/reaper-right/idle.png",
             frames: 2
         }
     }

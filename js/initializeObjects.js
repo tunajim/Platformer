@@ -68,7 +68,7 @@ const platforms = [
       x: 100,
       y: canvas.height - tileSize,
     },
-    imageSrc: "~/spritesheet/platforms/flat-platform.png",
+    imageSrc: "spritesheet/platforms/flat-platform.png",
     tiles: 5,
   }),
   new Platform({
@@ -76,7 +76,7 @@ const platforms = [
       x: 400,
       y: canvas.height - tileSize,
     },
-    imageSrc: "~/spritesheet/platforms/flat-platform.png",
+    imageSrc: "spritesheet/platforms/flat-platform.png",
     tiles: 5,
   }),
   new Platform({
@@ -84,7 +84,7 @@ const platforms = [
       x: 725,
       y: canvas.height - tileSize - 100,
     },
-    imageSrc: "~/spritesheet/platforms/flat-platform.png",
+    imageSrc: "spritesheet/platforms/flat-platform.png",
     tiles: 1,
   }),
   new Platform({
@@ -92,7 +92,7 @@ const platforms = [
       x: 850,
       y: canvas.height - tileSize - 100,
     },
-    imageSrc: "~/spritesheet/platforms/flat-platform.png",
+    imageSrc: "spritesheet/platforms/flat-platform.png",
     tiles: 1,
   }),
   new Platform({
@@ -100,7 +100,7 @@ const platforms = [
       x: 1000,
       y: canvas.height - tileSize - 200,
     },
-    imageSrc: "~/spritesheet/platforms/flat-platform.png",
+    imageSrc: "spritesheet/platforms/flat-platform.png",
     tiles: 5,
   }),
   new Platform({
@@ -108,7 +108,7 @@ const platforms = [
       x: 1250,
       y: canvas.height - tileSize - 200,
     },
-    imageSrc: "~/spritesheet/platforms/flat-platform.png",
+    imageSrc: "spritesheet/platforms/flat-platform.png",
     tiles: 2,
   }),
 ];
@@ -131,7 +131,7 @@ const enemy1 = new Enemy({
     },
     sprites: {
         right: {
-            imageSrc: "~/spritesheet/reaper-right/idle.png",
+            imageSrc: "spritesheet/reaper-right/idle.png",
             frames: 2
         }
     }

@@ -13,40 +13,68 @@ const player = new Player({
   },
   color: "red",
   imageSrc: "spritesheet/blue_witch/B_witch_idle.png",
-  frames: 6,
+  frames: {
+    x: 1,
+    y: 6
+  },
   scale: 3,
   offset: {
-    x: 0,
-    y: -5,
+    x: -22,
+    y: -20,
+  },
+  hitbox: {
+    width: 45,
+    height: 100
   },
   sprites: {
     idle: {
       imageSrc: "spritesheet/blue_witch/B_witch_idle.png",
-      frames: 6,
+      frames: {
+        x: 1,
+        y: 6,
+      }
     },
     run: {
       imageSrc: "spritesheet/blue_witch/B_witch_run.png",
-      frames: 8,
+      frames: {
+        x: 1,
+        y: 8
+      }
     },
     run_left: {
       imageSrc: "spritesheet/blue_witch/B_witch_run_left.png",
-      frames: 8,
+      frames: {
+        x: 1,
+        y: 8
+      }
     },
     charge: {
     imageSrc: "spritesheet/blue_witch/B_witch_charge.png",
-      frames: 5,
+      frames: {
+        x: 1,
+        y: 5,
+      }
     },
     idle_charged: {
       imageSrc: "spritesheet/blue_witch/B_witch_idle_charged.png",
-      frames: 6,
+      frames: {
+        x: 1,
+        y: 6
+      }
     },
     run_left_charged: {
       imageSrc: "spritesheet/blue_witch/B_witch_run_left_charged.png",
-      frames: 8,
+      frames: {
+        x: 1,
+        y: 8
+      }
     },
     run_charged: {
       imageSrc: "spritesheet/blue_witch/B_witch_run_charged.png",
-      frames: 8,
+      frames: {
+        x: 1,
+        y: 8
+      }
     },
 
   },
@@ -115,7 +143,7 @@ const platforms = [
 
 const enemy1 = new Enemy({
     position: {
-        x: 100,
+        x: 500,
         y: 0
     },
     velocity: {
@@ -123,16 +151,33 @@ const enemy1 = new Enemy({
         y: 0
     },
     imageSrc: "spritesheet/reaper-right/idle.png",
-    frames: 2,
-    scale: 1,
+    frames: {
+        x: 4,
+        y: 1
+    },
+    scale: 2,
     offset: {
-        x: 0,
-        y: 0
+        x: -60,
+        y: -20
+    },
+    hitbox: {
+      width: 75,
+      height: 150
     },
     sprites: {
         right: {
             imageSrc: "spritesheet/reaper-right/idle.png",
-            frames: 2
+            frames: {
+                x: 4,
+                y: 1
+            }
+        },
+        left: {
+            imageSrc: "spritesheet/reaper-left/idle.png",
+            frames: {
+                x: 4,
+                y: 1
+            }
         }
     }
 });

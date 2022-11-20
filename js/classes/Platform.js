@@ -9,6 +9,7 @@ class Platform {
     this.ctx = canvas.getContext("2d");
   }
   drawSprite() {
+
     this.ctx.drawImage(
       this.img,
       this.position.x,
@@ -20,7 +21,7 @@ class Platform {
   load() {
     this.img.onload = () => {
       console.log("loaded");
-    }
+    };
   }
   drawBox() {
     // this.ctx.fillStyle = "red";

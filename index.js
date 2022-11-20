@@ -8,7 +8,6 @@ canvas.height = 576;
 let loaded = false;
 
 player.load();
-platform.load();
 enemy1.load();
 let keys = {
   a: { pressed: false },
@@ -187,6 +186,7 @@ function moveScreen() {
       platforms.forEach((platform) => {
         platform.position.x -= 3;
       });
+      enemy1.position.x -= 3;
       parallaxBackground(-1);
     }
   } else if (player.position.x < 100 && player.lastKey === "a") {
@@ -194,6 +194,7 @@ function moveScreen() {
       platforms.forEach((platform) => {
         platform.position.x += 3;
       });
+      enemy1.position.x += 3;
       parallaxBackground(1);
     }
   }

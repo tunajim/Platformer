@@ -13,6 +13,7 @@ class Sprite {
     this.scale = scale;
   }
   load() {
+    velocity,
     this.img.onload = () => {
       console.log('player-sprite loaded');
     }

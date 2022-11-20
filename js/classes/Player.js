@@ -343,15 +343,15 @@ class Enemy extends Sprite {
     this.hitGround();
     this.position.y += this.velocity.y;
     this.enemyMovement();
-    this.attack();
+    // this.attack();
   }
 
-  attack(){
-    let distance = Math.abs();
-    if(){
+  // attack(){
+  //   let distance = Math.abs();
+  //   if(){
 
-    }
-  }
+  //   }
+  // }
 
 
 

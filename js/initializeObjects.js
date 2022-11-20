@@ -12,7 +12,7 @@ const player = new Player({
     y: 0,
   },
   color: "red",
-  imageSrc: "~/spritesheet/blue_witch/B_witch_idle.png",
+  imageSrc: "spritesheet/blue_witch/B_witch_idle.png",
   frames: 6,
   scale: 3,
   offset: {

@@ -17,7 +17,7 @@ class Platform {
       this.tileSize
     );
   }
-  loadImg() {
+  load() {
     this.img.onload = () => {
       console.log("loaded");
     }

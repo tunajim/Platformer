@@ -8,7 +8,9 @@ canvas.height = 576;
 let loaded = false;
 
 player.load();
-enemy1.load();
+enemies.forEach((enemy) => {
+  enemy.load();
+});
 let keys = {
   a: { pressed: false },
   d: { pressed: false },
@@ -37,7 +39,9 @@ function animate() {
   checkPlayerPosition();
   listenForCharge();
   player.update();
-  enemy1.update();
+  enemies.forEach((enemy) => {
+    if (!enemy.dead) enemy.update();
+  });
   let game = window.requestAnimationFrame(animate);
   checkWin(game);
 }
@@ -97,13 +101,15 @@ function checkKeydown(e) {
       player.lastKey = "d";
       break;
     case " ":
-      if (!player.charged && !keys.a.pressed && !keys.d.pressed) {
-        player.offset.y = -5;
-        player.offset.x = -25;
-        keys.space.pressed = true;
-        chargeUp = setTimeout(activateSuperJump, 1000);
-        player.switchSprite("charge");
-      }
+      if (!player.attacking) player.attacking = true;
+      keys.space.pressed = true;
+    // if (!player.charged && !keys.a.pressed && !keys.d.pressed) {
+    //   player.offset.y = -5;
+    //   player.offset.x = -25;
+    //   keys.space.pressed = true;
+    //   chargeUp = setTimeout(activateSuperJump, 1000);
+    //   player.switchSprite("charge");
+    // }
   }
 }
 
@@ -111,30 +117,19 @@ function checkKeyup(e) {
   switch (e.key) {
     case "a":
       keys.a.pressed = false;
-      !player.charged
-        ? player.switchSprite("idle")
-        : player.switchSprite("idle_charged");
       break;
     case "d":
       keys.d.pressed = false;
-      !player.charged
-        ? player.switchSprite("idle")
-        : player.switchSprite("idle_charged");
       break;
     case "w":
       keys.w.pressed = false;
       player.charged = false;
     case " ":
-      if (keys.space.pressed) {
-        player.offset.y = -5;
-        player.offset.x = 0;
-        keys.space.pressed = false;
-      }
       keys.space.pressed = false;
-      clearTimeout(chargeUp);
-      !player.charged
-        ? player.switchSprite("idle")
-        : player.switchSprite("idle_charged");
+      player.switchSprite("idle");
+      player.update();
+    // player.column = 0;
+    // player. row = 0;
   }
 }
 
@@ -143,27 +138,32 @@ function checkPlayerPosition() {
   if (keys.d.pressed && player.lastKey === "d") {
     if (player.position.x < 200) {
       player.velocity.x = 3;
-      !player.charged
-        ? player.switchSprite("run")
-        : player.switchSprite("run_charged");
+      player.switchSprite("run");
     } else if (player.position.x > 200) {
       player.velocity.x = 0;
-      !player.charged
-        ? player.switchSprite("run")
-        : player.switchSprite("run_charged");
+      player.switchSprite("run");
     }
   } else if (keys.a.pressed && player.lastKey === "a") {
     if (player.position.x >= 100) {
       player.velocity.x = -3;
-      !player.charged
-        ? player.switchSprite("run_left")
-        : player.switchSprite("run_left_charged");
+      player.switchSprite("run_left");
     } else if (player.position.x < 100) {
       player.velocity.x = 0;
-      !player.charged
-        ? player.switchSprite("run_left")
-        : player.switchSprite("run_left_charged");
+      player.switchSprite("run_left");
     }
+  }
+
+  if (!keys.d.pressed && !keys.a.pressed && keys.space.pressed) {
+    player.velocity.x = 0;
+    if (player.lastKey === "d") {
+      player.switchSprite("attack_right");
+    } else if (player.lastKey === "a") {
+      player.switchSprite("attack_left");
+    }
+  }
+
+  if (!keys.d.pressed && !keys.a.pressed && !keys.space.pressed) {
+    player.switchSprite("idle");
   }
 }
 
@@ -186,7 +186,9 @@ function moveScreen() {
       platforms.forEach((platform) => {
         platform.position.x -= 3;
       });
-      enemy1.position.x -= 3;
+      enemies.forEach((enemy) => {
+        enemy.position.x -= 3;
+      });
       parallaxBackground(-1);
     }
   } else if (player.position.x < 100 && player.lastKey === "a") {
@@ -194,7 +196,9 @@ function moveScreen() {
       platforms.forEach((platform) => {
         platform.position.x += 3;
       });
-      enemy1.position.x += 3;
+      enemies.forEach((enemy) => {
+        enemy.position.x += 3;
+      });
       parallaxBackground(1);
     }
   }
@@ -219,7 +223,6 @@ function activateSuperJump() {
 function parallaxBackground(dir) {
   for (let i = backgrounds.length - 1; i > 0; i--) {
     backgrounds[i].position.x += 0.05 * i * dir;
-    console.log(backgrounds[0].position.x);
   }
 }
 

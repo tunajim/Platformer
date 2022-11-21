@@ -1,5 +1,14 @@
 class Sprite {
-  constructor({ imageSrc, position, frames, offset, scale, hitbox }) {
+  constructor({
+    imageSrc,
+    position,
+    frames,
+    offset,
+    scale,
+    hitbox,
+    hitFrame,
+    attackHitBox,
+  }) {
     this.imageSrc = imageSrc;
     this.position = position;
     this.frames = frames;
@@ -16,6 +25,8 @@ class Sprite {
     this.offset = offset;
     this.scale = scale;
     this.hitbox = hitbox;
+    this.hitFrame = hitFrame;
+    this.attackHitBox = attackHitBox;
   }
   load() {
     this.img.onload = () => {
@@ -43,6 +54,19 @@ class Sprite {
     );
   }
 
+  renderAttackHitBox(state) {
+    if (state === "inactive") {
+      ctx.clearRect();
+    } else if (state === "active") {
+      ctx.fillRect(
+        this.position.x + 50 * this.attackHitBox.dir,
+        this.position.y,
+        this.attackHitBox.width,
+        this.attackHitBox.height
+      );
+    }
+  }
+
   animateFrames() {
     this.framesElapsed++;
 
@@ -50,9 +74,8 @@ class Sprite {
       if (this.row < this.frames.y - 1) {
         if (this.column < this.frames.x - 1) {
           this.column++;
-        } else if (this.column == this.frames.x - 1) {
-          this.row++;
         }
+        this.row++;
       } else if (
         this.row == this.frames.y - 1 &&
         this.column < this.frames.x - 1
@@ -64,8 +87,59 @@ class Sprite {
       ) {
         this.row = 0;
         this.column = 0;
-        console.log("go");
       }
+    }
+
+    if (
+      (this.hitFrame !== 99 && this.column >= this.hitFrame - 1) ||
+      this.row >= this.hitFrame - 1
+    ) {
+      console.log("hit");
+      // this.renderAttackHitBox("active");
+      if (
+        (this.position.y <= player.position.y &&
+          this.position.y + this.hitbox.height >= player.position.y) ||
+        (this.position.y >= player.position.y &&
+          this.position.y + this.hitbox.height <=
+            player.position.y + player.hitbox.height) ||
+        (this.position.y + this.hitbox.height >= player.position.y &&
+          this.position.y + this.hitbox.height <=
+            player.position.y + player.hitbox.height)
+      ) {
+        if (
+          (this.position.x - 50 <= player.position.x + player.hitbox.width &&
+            this.position.x - 50 + this.hitbox.width >=
+              player.position.x + player.hitbox.width) ||
+          (this.position.x + this.attackHitBox.width + 50 >=
+            player.position.x &&
+            this.position.x + this.attackHitBox.width + 50 <=
+              player.position.x + player.hitbox.width)
+        ) {
+          console.log("attacked");
+          enemies.forEach((enemy) => {
+            if (!enemy.dead) player.die();
+          });
+        }
+      }
+      enemies.forEach((enemy) => {
+        if (
+          (this.position.y + this.attackHitBox.height <=
+            enemy.position.y + enemy.hitbox.height &&
+            this.position.y + this.attackHitBox.height >= enemy.position.y) ||
+          (this.position.y >= enemy.position.y &&
+            this.position.y <= enemy.position.y + enemy.hitbox.height)
+        ) {
+          if (
+            this.position.x + this.attackHitBox.width >= enemy.position.x &&
+            this.position.x <= enemy.position.x
+          ) {
+            if (player.attacking) {
+              console.log("enemy dead");
+              enemy.dead = true;
+            }
+          }
+        }
+      });
     }
   }
 
@@ -85,6 +159,8 @@ class Player extends Sprite {
     scale,
     offset,
     hitbox,
+    hitFrame,
+    attackHitBox,
     sprites,
   }) {
     super({
@@ -94,20 +170,23 @@ class Player extends Sprite {
       scale,
       hitbox,
       offset,
+      hitFrame,
+      attackHitBox,
     });
     this.lastKey;
     this.jumping = false;
     this.gravity = 0.02;
     this.gravitySpeed = 0;
     this.velocity = velocity;
-    this.row = 0;
-    this.column = 0;
+    // this.row = 0;
+    // this.column = 0;
     this.framesElapsed = 0;
     this.framesHold = 20;
     this.sprites = sprites;
     this.charged = false;
     this.grounded = false;
     this.dead = false;
+    this.attacking = false;
 
     for (const sprite in this.sprites) {
       sprites[sprite].image = new Image();
@@ -166,8 +245,44 @@ class Player extends Sprite {
     this.position.x += this.velocity.x;
     if (!this.grounded) this.gravitySpeed += this.gravity;
     this.velocity.y += this.gravitySpeed;
-    this.hitGround();
+    if (!this.dead) this.hitGround();
+    this.getHit();
+    if (this.attacking) this.switchSprite("attack_right");
     this.position.y += this.velocity.y;
+  }
+
+  getHit() {
+    enemies.forEach((enemy) => {
+      if (
+        this.position.y >= enemy.position.y &&
+        this.position.y + this.hitbox.height <=
+          enemy.position.y + enemy.hitbox.height + 100
+      ) {
+        if (
+          (this.position.x + this.hitbox.width > enemy.position.x &&
+            this.position.x <= enemy.position.x) ||
+          (this.position.x >= enemy.position.x &&
+            this.position.x + this.hitbox.width <=
+              enemy.position.x + enemy.hitbox.width)
+        ) {
+          console.log("get hit");
+          if (!enemy.dead) {
+            this.die();
+            this.dead = true;
+          }
+        }
+      }
+    });
+  }
+
+  die() {
+    console.log("youve been killed");
+    this.dead = true;
+  }
+
+  attack() {
+    // console.log(this.column);
+    // this.switchSprite("attack_right");
   }
 
   standStill() {
@@ -183,6 +298,7 @@ class Player extends Sprite {
             x: this.sprites.idle.frames.x,
             y: this.sprites.idle.frames.y,
           };
+          this.hitFrame = 99;
           this.row = 0;
           this.column = 0;
         }
@@ -195,6 +311,7 @@ class Player extends Sprite {
             x: this.sprites.run.frames.x,
             y: this.sprites.run.frames.y,
           };
+          this.hitFrame = 99;
           this.row = 0;
           this.column = 0;
         }
@@ -206,54 +323,36 @@ class Player extends Sprite {
             x: this.sprites.run_left.frames.x,
             y: this.sprites.run_left.frames.y,
           };
+          this.hitFrame = 99;
           this.row = 0;
           this.column = 0;
         }
         break;
-      case "charge":
-        if (this.img !== this.sprites.charge.image) {
-          this.img = this.sprites.charge.image;
+      case "attack_right":
+        if (this.img !== this.sprites.attack_right.image) {
+          this.img = this.sprites.attack_right.image;
           this.frames = {
-            x: this.sprites.charge.frames.x,
-            y: this.sprites.charge.frames.y,
+            x: this.sprites.attack_right.frames.x,
+            y: this.sprites.attack_right.frames.y,
           };
+          this.hitFrame = this.sprites.attack_right.hitFrame;
+          this.attackHitBox = this.sprites.attack_right.attackHitBox;
           this.row = 0;
           this.column = 0;
         }
         break;
-      case "idle_charged":
-        if (this.img !== this.sprites.idle_charged.image) {
-          this.img = this.sprites.idle_charged.image;
+      case "attack_left":
+        if (this.img !== this.sprites.attack_left.image) {
+          this.img = this.sprites.attack_left.image;
           this.frames = {
-            x: this.sprites.idle_charged.frames.x,
-            y: this.sprites.idle_charged.frames.y,
+            x: this.sprites.attack_left.frames.x,
+            y: this.sprites.attack_left.frames.y,
           };
+          this.hitFrame = this.sprites.attack_left.hitFrame;
+          this.attackHitBox = this.sprites.attack_left.attackHitBox;
           this.row = 0;
           this.column = 0;
         }
-        break;
-      case "run_left_charged":
-        if (this.img !== this.sprites.run_left_charged.image) {
-          this.img = this.sprites.run_left_charged.image;
-          this.frames = {
-            x: this.sprites.run_left_charged.frames.x,
-            y: this.sprites.run_left_charged.frames.y,
-          };
-          this.row = 0;
-          this.column = 0;
-        }
-        break;
-      case "run_charged":
-        if (this.img !== this.sprites.run_charged.image) {
-          this.img = this.sprites.run_charged.image;
-          this.frames = {
-            x: this.sprites.idle.frames.x,
-            y: this.sprites.idle.frames.y,
-          };
-          this.row = 0;
-          this.column = 0;
-        }
-        break;
     }
   }
 }
@@ -269,6 +368,8 @@ class Enemy extends Sprite {
     scale,
     offset,
     hitbox,
+    hitFrame,
+    attackHitBox,
     sprites,
   }) {
     super({
@@ -278,6 +379,8 @@ class Enemy extends Sprite {
       offset,
       scale,
       hitbox,
+      hitFrame,
+      attackHitBox,
     });
     this.gravity = 0.02;
     this.gravitySpeed = 0;
@@ -322,11 +425,6 @@ class Enemy extends Sprite {
         // this.grounded = false;
       }
     });
-
-    if (this.position.y + this.height > canvas.width) {
-      console.log("dead");
-      this.dead = true;
-    }
   }
 
   update() {
@@ -343,17 +441,40 @@ class Enemy extends Sprite {
     this.hitGround();
     this.position.y += this.velocity.y;
     this.enemyMovement();
+    this.checkDistance();
+    if (this.dead) {
+      this.velocity.x = 0;
+      setTimeout(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }, 1000);
+    }
     // this.attack();
   }
 
-  // attack(){
-  //   let distance = Math.abs();
-  //   if(){
+  die() {
+    this.dead = true;
+  }
 
-  //   }
-  // }
-
-
+  attack(dis) {
+    console.log(dis);
+    platforms.forEach((platform) => {
+      if (
+        this.position.x > platform.position.x &&
+        this.position.x + this.hitbox.width <
+          platform.position.x + tileSize * platform.tiles
+      ) {
+        if (dis < 0) {
+          this.switchEnemySprite("attack_left");
+          this.velocity.x = -1;
+          this.attacking = true;
+        } else if (dis > 0) {
+          this.switchEnemySprite("attack_right");
+          this.velocity.x = 1;
+          this.attacking = true;
+        }
+      }
+    });
+  }
 
   enemyMovement() {
     platforms.forEach((platform) => {
@@ -362,16 +483,16 @@ class Enemy extends Sprite {
         this.position.x + this.width <
           platform.position.x + tileSize * platform.tiles
       ) {
-        this.direction === "right"
-          ? (this.velocity.x = 1)
-          : (this.velocity.x = -1);
-        console.log("gooo");
+        if (!this.attacking) {
+          this.direction === "right"
+            ? (this.velocity.x = 1)
+            : (this.velocity.x = -1);
+        }
       } else if (
         this.position.x >= platform.position.x &&
         this.position.x + this.width ==
           platform.position.x + tileSize * platform.tiles
       ) {
-        console.log("going");
         this.velocity.x = 0;
         setTimeout(() => {
           this.direction = "left";
@@ -394,10 +515,11 @@ class Enemy extends Sprite {
       case "left":
         if (this.img !== this.sprites.left.image) {
           this.img = this.sprites.left.image;
-          this.frames = {
+          (this.frames = {
             x: this.sprites.left.frames.x,
             y: this.sprites.left.frames.y,
-          };
+          }),
+            (this.hitFrame = 99);
           this.row = 0;
           this.column = 0;
         }
@@ -405,13 +527,62 @@ class Enemy extends Sprite {
       case "right":
         if (this.img !== this.sprites.right.image) {
           this.img = this.sprites.right.image;
-          this.frames = {
+          (this.frames = {
             x: this.sprites.right.frames.x,
             y: this.sprites.right.frames.y,
-          };
+          }),
+            (this.hitFrame = 99);
           this.row = 0;
           this.column = 0;
         }
+        break;
+      case "attack_left":
+        if (this.img !== this.sprites.attack_left.image) {
+          this.img = this.sprites.attack_left.image;
+          this.frames = {
+            x: this.sprites.attack_left.frames.x,
+            y: this.sprites.attack_left.frames.y,
+          };
+          this.hitFrame = this.sprites.attack_left.hitFrame;
+          this.attackHitBox = this.sprites.attack_left.attackHitBox;
+          this.row = 0;
+          this.column = 0;
+          this.attacking = true;
+        }
+        break;
+      case "attack_right":
+        if (this.img !== this.sprites.attack_right.image) {
+          this.img = this.sprites.attack_right.image;
+          this.frames = {
+            x: this.sprites.attack_right.frames.x,
+            y: this.sprites.attack_right.frames.y,
+          };
+          this.hitFrame = this.sprites.attack_right.hitFrame;
+          this.attackHitBox = this.sprites.attack_right.attackHitBox;
+          this.row = 0;
+          this.column = 0;
+          this.attacking = true;
+        }
+        break;
+    }
+  }
+
+  checkDistance() {
+    let distance;
+    if (player.position.x + player.hitbox.width < this.position.x) {
+      distance = player.position.x + player.hitbox.width - this.position.x;
+    } else if (player.position.x > this.position.x + this.hitbox.width) {
+      distance = player.position.x - (this.position.x + this.hitbox.width);
+    }
+    if (
+      Math.abs(distance) <= 200 &&
+      player.position.y + player.hitbox.height >= this.position.y &&
+      player.position.y + player.hitbox.height <=
+        this.position.y + this.hitbox.height + 10
+    ) {
+      this.attack(distance);
+    } else {
+      this.attacking = false;
     }
   }
 }

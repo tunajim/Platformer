@@ -15,7 +15,7 @@ const player = new Player({
   imageSrc: "spritesheet/blue_witch/B_witch_idle.png",
   frames: {
     x: 1,
-    y: 6
+    y: 6,
   },
   scale: 3,
   offset: {
@@ -24,7 +24,7 @@ const player = new Player({
   },
   hitbox: {
     width: 45,
-    height: 100
+    height: 100,
   },
   sprites: {
     idle: {
@@ -32,54 +32,53 @@ const player = new Player({
       frames: {
         x: 1,
         y: 6,
-      }
+      },
+      hitFrame: 99,
     },
     run: {
       imageSrc: "spritesheet/blue_witch/B_witch_run.png",
       frames: {
         x: 1,
-        y: 8
-      }
+        y: 8,
+      },
+      hitFrame: 99
     },
     run_left: {
       imageSrc: "spritesheet/blue_witch/B_witch_run_left.png",
       frames: {
         x: 1,
-        y: 8
-      }
+        y: 8,
+      },
+      hitFrame: 99
     },
-    charge: {
-    imageSrc: "spritesheet/blue_witch/B_witch_charge.png",
+    attack_right: {
+      imageSrc: "spritesheet/blue_witch/B_witch_attack.png",
       frames: {
         x: 1,
-        y: 5,
-      }
+        y: 9
+      },
+      hitFrame: 6,
+      attackHitBox: {
+        dir: 1,
+        width: 250,
+        height: 100,
+      },
     },
-    idle_charged: {
-      imageSrc: "spritesheet/blue_witch/B_witch_idle_charged.png",
+    attack_left: {
+      imageSrc: "spritesheet/blue_witch/B_witch_attack_left.png",
       frames: {
         x: 1,
-        y: 6
-      }
+        y: 9
+      },
+      hitFrame: 6,
+      attackHitBox: {
+        dir: -1,
+        width: 250,
+        height: 100,
+      },
     },
-    run_left_charged: {
-      imageSrc: "spritesheet/blue_witch/B_witch_run_left_charged.png",
-      frames: {
-        x: 1,
-        y: 8
-      }
-    },
-    run_charged: {
-      imageSrc: "spritesheet/blue_witch/B_witch_run_charged.png",
-      frames: {
-        x: 1,
-        y: 8
-      }
-    },
-
   },
 });
-
 
 const platform = new Platform({
   position: {
@@ -95,6 +94,14 @@ const platforms = [
     position: {
       x: 100,
       y: canvas.height - tileSize,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 5,
+  }),
+  new Platform({
+    position: {
+      x: 400,
+      y: canvas.height - tileSize - 200,
     },
     imageSrc: "spritesheet/platforms/flat-platform.png",
     tiles: 5,
@@ -141,46 +148,147 @@ const platforms = [
   }),
 ];
 
-const enemy1 = new Enemy({
+const enemies = [
+  new Enemy({
     position: {
-        x: 500,
-        y: 0
+      x: 500,
+      y: 0,
     },
     velocity: {
-        x: 0,
-        y: 0
+      x: 0,
+      y: 0,
     },
     imageSrc: "spritesheet/reaper-right/idle.png",
     frames: {
-        x: 4,
-        y: 1
+      x: 4,
+      y: 1,
     },
     scale: 2,
     offset: {
-        x: -60,
-        y: -20
+      x: -60,
+      y: -20,
     },
     hitbox: {
       width: 75,
-      height: 150
+      height: 150,
     },
     sprites: {
-        right: {
-            imageSrc: "spritesheet/reaper-right/idle.png",
-            frames: {
-                x: 4,
-                y: 1
-            }
+      right: {
+        imageSrc: "spritesheet/reaper-right/idle.png",
+        frames: {
+          x: 4,
+          y: 1,
         },
-        left: {
-            imageSrc: "spritesheet/reaper-left/idle.png",
-            frames: {
-                x: 4,
-                y: 1
-            }
+      },
+      left: {
+        imageSrc: "spritesheet/reaper-left/idle.png",
+        frames: {
+          x: 4,
+          y: 1,
+        },
+      },
+      attack_left: {
+        imageSrc: "spritesheet/reaper-left/attacking.png",
+        frames: {
+          x: 6,
+          y: 1,
+        },
+        hitFrame: 4,
+        attackHitBox: {
+          dir: -1,
+          width: 50,
+          height: 100,
+        },
+      },
+      attack_right: {
+        imageSrc: "spritesheet/reaper-right/attacking.png",
+        frames: {
+          x: 6,
+          y: 1,
+        },
+        hitFrame: 4,
+        attackHitBox: {
+          dir: 1,
+          width: 50,
+          height: 100,
+        },
+      },
+      die: {
+        imageSrc: "spritesheet/reaper-right/death.png",
+        frames: {
+          x: 10,
+          y: 2
         }
-    }
-});
+      }
+    },
+  }),
+  new Enemy({
+    position: {
+      x: 1000,
+      y: 0,
+    },
+    velocity: {
+      x: 0,
+      y: 0,
+    },
+    imageSrc: "spritesheet/reaper-right/idle.png",
+    frames: {
+      x: 4,
+      y: 1,
+    },
+    scale: 2,
+    offset: {
+      x: -60,
+      y: -20,
+    },
+    hitbox: {
+      width: 75,
+      height: 150,
+    },
+    sprites: {
+      right: {
+        imageSrc: "spritesheet/reaper-right/idle.png",
+        frames: {
+          x: 4,
+          y: 1,
+        },
+      },
+      left: {
+        imageSrc: "spritesheet/reaper-left/idle.png",
+        frames: {
+          x: 4,
+          y: 1,
+        },
+      },
+      attack_left: {
+        imageSrc: "spritesheet/reaper-left/attacking.png",
+        frames: {
+          x: 6,
+          y: 1,
+        },
+        hitFrame: 3,
+        attackHitBox: {
+          dir: -1,
+          width: 50,
+          height: 100,
+        },
+      },
+      attack_right: {
+        imageSrc: "spritesheet/reaper-right/attacking.png",
+        frames: {
+          x: 6,
+          y: 1,
+        },
+        hitFrame: 3,
+        attackHitBox: {
+          dir: 1,
+          width: 50,
+          height: 100,
+        },
+      },
+    },
+  }),
+];
 
 const backgrounds = [
   new Background({

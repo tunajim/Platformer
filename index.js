@@ -139,7 +139,7 @@ function checkKeyup(e) {
     case " ":
       keys.space.pressed = false;
       player.attacking = false;
-      player.switchSprite("idle");
+      if(!keys.a.pressed && !keys.d.pressed) player.switchSprite("idle");
       player.update();
     // player.column = 0;
     // player. row = 0;
@@ -152,7 +152,7 @@ function checkPlayerPosition() {
     if (player.position.x < 400) {
       player.velocity.x = 3;
       player.switchSprite("run");
-    } else if (player.position.x > 400) {
+    } else if (player.position.x >= 400) {
       player.velocity.x = 0;
       player.switchSprite("run");
     }

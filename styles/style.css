@@ -48,8 +48,18 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-family: monospace;
     /* margin-top: 1rem; */
 }
+
+.overlay.active h2 {
+    font-size: 8em;
+}
+
+.overlay.active p {
+    font-size: 3em;
+}
+
 
 .backgrounds {
     display: none;

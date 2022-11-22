@@ -194,6 +194,14 @@ const platforms = [
     imageSrc: "spritesheet/platforms/flat-platform.png",
     tiles: 10,
   }),
+  new Platform({
+    position: {
+      x: 3300,
+      y: canvas.height - tileSize,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 10,
+  }),
 ];
 
 const playerPlatforms = [
@@ -208,6 +216,30 @@ const playerPlatforms = [
   new Platform({
     position: {
       x: 3050,
+      y: canvas.height - tileSize - 200,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 1,
+  }),
+  new Platform({
+    position: {
+      x: 3275,
+      y: canvas.height - tileSize - 300,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 1,
+  }),
+  new Platform({
+    position: {
+      x: 3500,
+      y: canvas.height - tileSize - 200,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 1,
+  }),
+  new Platform({
+    position: {
+      x: 3725,
       y: canvas.height - tileSize - 300,
     },
     imageSrc: "spritesheet/platforms/flat-platform.png",
@@ -294,6 +326,31 @@ const enemies = [
   new Enemy({
     position: {
       x: 2500,
+      y: 0,
+    },
+    velocity: {
+      x: 0,
+      y: 0,
+    },
+    imageSrc: "spritesheet/reaper-right/idle.png",
+    frames: {
+      x: 4,
+      y: 1,
+    },
+    scale: 2,
+    offset: {
+      x: -60,
+      y: -20,
+    },
+    hitbox: {
+      width: 75,
+      height: 150,
+    },
+    sprites: enemySprites
+  }),
+  new Enemy({
+    position: {
+      x: 3500,
       y: 0,
     },
     velocity: {

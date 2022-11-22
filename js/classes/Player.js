@@ -206,7 +206,7 @@ class Player extends Sprite {
     // this.row = 0;
     // this.column = 0;
     this.framesElapsed = 0;
-    this.framesHold = 20;
+    this.framesHold = 15;
     this.sprites = sprites;
     this.charged = false;
     this.grounded = false;
@@ -350,6 +350,7 @@ class Player extends Sprite {
           this.row = 0;
           this.column = 0;
           this.offset = this.sprites.idle.offset;
+          this.framesHold = 15;
         }
         break;
       case "idle_left":
@@ -363,6 +364,7 @@ class Player extends Sprite {
           this.row = 0;
           this.column = 0;
           this.offset = this.sprites.idle_left.offset;
+          this.framesHold = 15;
         }
         break;
       case "run":
@@ -377,6 +379,7 @@ class Player extends Sprite {
           this.row = 0;
           this.column = 0;
           this.offset = this.sprites.run.offset;
+          this.framesHold = 15;
         }
         break;
       case "run_left":
@@ -390,6 +393,7 @@ class Player extends Sprite {
           this.row = 0;
           this.column = 0;
           this.offset = this.sprites.run_left.offset;
+          this.framesHold = 15;
         }
         break;
       case "attack_right":
@@ -404,6 +408,7 @@ class Player extends Sprite {
           this.row = 0;
           this.column = 0;
           this.offset = this.sprites.attack_right.offset;
+          this.framesHold = 7;
         }
         break;
       case "attack_left":
@@ -422,6 +427,7 @@ class Player extends Sprite {
             (this.row = 0);
           this.column = 0;
           this.offset = this.sprites.attack_left.offset;
+          this.framesHold = 7;
         }
     }
   }
@@ -514,7 +520,7 @@ class Enemy extends Sprite {
     this.hitGround();
     this.position.y += this.velocity.y;
 
-    if (Math.abs(this.distance) < 150 && Math.abs(this.distance) < 100) {
+    if (Math.abs(this.distance) < 200) {
       this.attack(this.checkDistance());
     } else {
       this.attacking = false;
@@ -650,7 +656,6 @@ class Enemy extends Sprite {
         }
         break;
       case "dead":
-        console.log("dead switch");
         if (this.img !== this.sprites.dead.image) {
           this.img = this.sprites.dead.image;
           this.frames = {

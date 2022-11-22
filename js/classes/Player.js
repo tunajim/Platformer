@@ -254,6 +254,21 @@ class Player extends Sprite {
       }
     });
 
+    playerPlatforms.forEach((platform) => {
+      if (
+        this.position.y + height <= platform.position.y &&
+        this.position.y + height + this.velocity.y >= platform.position.y &&
+        this.position.x + width >= platform.position.x &&
+        this.position.x <= platform.position.x + tileSize * platform.tiles
+      ) {
+        this.velocity.y = 0;
+        this.grounded = true;
+        // this.jumping = false;
+      } else {
+        // this.grounded = false;
+      }
+    });
+
     if (this.position.y + height > canvas.width) {
       this.dead = true;
     }
@@ -454,6 +469,7 @@ class Enemy extends Sprite {
     this.width = this.hitbox.width;
     this.direction = "right";
     this.attacking = false;
+    this.distance = null;
     for (const sprite in this.sprites) {
       sprites[sprite].image = new Image();
       sprites[sprite].image.src = sprites[sprite].imageSrc;
@@ -485,6 +501,7 @@ class Enemy extends Sprite {
   update() {
     if (this.dead) this.velocity.x = 0;
     if (this.dead) this.switchEnemySprite("dead");
+    this.distance = this.checkDistance();
     this.draw();
 
     // ctx.fillStyle = "red";
@@ -496,8 +513,13 @@ class Enemy extends Sprite {
     this.velocity.y += this.gravitySpeed;
     this.hitGround();
     this.position.y += this.velocity.y;
+
+    if (Math.abs(this.distance) < 150 && Math.abs(this.distance) < 100) {
+      this.attack(this.checkDistance());
+    } else {
+      this.attacking = false;
+    }
     this.enemyMovement();
-    this.checkDistance();
     // this.attack();
   }
 
@@ -549,22 +571,18 @@ class Enemy extends Sprite {
           platform.position.x + tileSize * platform.tiles
       ) {
         this.velocity.x = 0;
-        setTimeout(() => {
-          this.direction = "left";
-          this.velocity.x = -1;
-          this.switchEnemySprite("left");
-        }, 1000);
+        this.direction = "left";
+        this.velocity.x = -1;
+        this.switchEnemySprite("left");
       } else if (
         !this.dead &&
         !this.attacking &&
         this.position.x == platform.position.x
       ) {
         this.velocity.x = 0;
-        setTimeout(() => {
-          this.direction = "right";
-          this.velocity.x = 1;
-          this.switchEnemySprite("right");
-        }, 1000);
+        this.direction = "right";
+        this.velocity.x = 1;
+        this.switchEnemySprite("right");
       } else if (
         (!this.dead &&
           this.attacking &&
@@ -653,10 +671,6 @@ class Enemy extends Sprite {
     } else if (player.position.x > this.position.x + this.hitbox.width) {
       distance = player.position.x - (this.position.x + this.hitbox.width);
     }
-    if (Math.abs(distance) <= 100) {
-      this.attack(distance);
-    } else {
-      this.attacking = false;
-    }
+    return distance;
   }
 }

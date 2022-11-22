@@ -32,14 +32,14 @@ function animate() {
 
   drawBackgrounds();
   drawPlatforms();
-  platform.drawBox();
+  // platform.drawBox();
 
   // if (keys.w.pressed) player.charged = false;
 
   checkPlayerPosition();
   player.update();
   enemies.forEach((enemy) => {
-    console.log(enemy.dead);
+    console.log(enemy.attacking);
     enemy.update();
   });
   let game = window.requestAnimationFrame(animate);
@@ -49,6 +49,15 @@ animate();
 
 window.addEventListener("keydown", checkKeydown);
 window.addEventListener("keyup", checkKeyup);
+
+// prevent scroll on spacebar press
+window.addEventListener('keydown', function(e) {
+  console.log(e);
+  if(e.key == " ") {
+    e.preventDefault();
+  }
+});
+
 
 let chargeUp;
 function checkWin(game) {
@@ -80,6 +89,9 @@ function drawPlatforms() {
   platforms.forEach((platform) => {
     platform.drawSprite();
   });
+  playerPlatforms.forEach((platform) => {
+    platform.drawSprite();
+  })
 }
 
 function checkKeydown(e) {
@@ -191,6 +203,9 @@ function moveScreen() {
       platforms.forEach((platform) => {
         platform.position.x -= 3;
       });
+      playerPlatforms.forEach((platform) => {
+        platform.position.x -= 3;
+      })
       enemies.forEach((enemy) => {
         enemy.position.x -= 3;
       });
@@ -201,6 +216,9 @@ function moveScreen() {
       platforms.forEach((platform) => {
         platform.position.x += 3;
       });
+      playerPlatforms.forEach((platform) => {
+        platform.position.x += 3;
+      })
       enemies.forEach((enemy) => {
         enemy.position.x += 3;
       });

@@ -34,6 +34,22 @@ const player = new Player({
         y: 6,
       },
       hitFrame: 99,
+      offset: {
+        x: -22,
+        y: -20,
+      },
+    },
+    idle_left: {
+      imageSrc: "spritesheet/blue_witch/B_witch_idle_left.png",
+      frames: {
+        x: 1,
+        y: 6,
+      },
+      hitFrame: 99,
+      offset: {
+        x: -22,
+        y: -20,
+      },
     },
     run: {
       imageSrc: "spritesheet/blue_witch/B_witch_run.png",
@@ -41,7 +57,11 @@ const player = new Player({
         x: 1,
         y: 8,
       },
-      hitFrame: 99
+      hitFrame: 99,
+      offset: {
+        x: -22,
+        y: -20,
+      },
     },
     run_left: {
       imageSrc: "spritesheet/blue_witch/B_witch_run_left.png",
@@ -49,13 +69,17 @@ const player = new Player({
         x: 1,
         y: 8,
       },
-      hitFrame: 99
+      hitFrame: 99,
+      offset: {
+        x: -22,
+        y: -20,
+      },
     },
     attack_right: {
       imageSrc: "spritesheet/blue_witch/B_witch_attack.png",
       frames: {
         x: 1,
-        y: 9
+        y: 9,
       },
       hitFrame: 6,
       attackHitBox: {
@@ -63,18 +87,26 @@ const player = new Player({
         width: 250,
         height: 100,
       },
+      offset: {
+        x: -22,
+        y: -20,
+      },
     },
     attack_left: {
       imageSrc: "spritesheet/blue_witch/B_witch_attack_left.png",
       frames: {
         x: 1,
-        y: 9
+        y: 9,
       },
       hitFrame: 6,
       attackHitBox: {
         dir: -1,
         width: 250,
         height: 100,
+      },
+      offset: {
+        x: -225,
+        y: -20,
       },
     },
   },
@@ -193,7 +225,7 @@ const enemies = [
           x: 6,
           y: 1,
         },
-        hitFrame: 4,
+        hitFrame: 3,
         attackHitBox: {
           dir: -1,
           width: 50,
@@ -206,20 +238,20 @@ const enemies = [
           x: 6,
           y: 1,
         },
-        hitFrame: 4,
+        hitFrame: 3,
         attackHitBox: {
           dir: 1,
           width: 50,
           height: 100,
         },
       },
-      die: {
+      dead: {
         imageSrc: "spritesheet/reaper-right/death.png",
         frames: {
-          x: 10,
-          y: 2
-        }
-      }
+          x: 20,
+          y: 1,
+        },
+      },
     },
   }),
   new Enemy({
@@ -284,6 +316,13 @@ const enemies = [
           dir: 1,
           width: 50,
           height: 100,
+        },
+      },
+      dead: {
+        imageSrc: "spritesheet/reaper-right/death.png",
+        frames: {
+          x: 20,
+          y: 1,
         },
       },
     },

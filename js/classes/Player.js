@@ -34,12 +34,16 @@ class Sprite {
     };
   }
   draw() {
-    // ctx.fillRect(
-    //   this.position.x,
-    //   this.position.y,
-    //   this.hitbox.width,
-    //   this.hitbox.height
-    // );
+    /* uncomment to draw hitboxes
+
+    ctx.fillRect(
+      this.position.x,
+      this.position.y,
+      this.hitbox.width,
+      this.hitbox.height
+    );
+
+    */
 
     ctx.drawImage(
       this.img,
@@ -59,11 +63,17 @@ class Sprite {
       ctx.clearRect();
     } else if (state === "active") {
       ctx.fillRect(
-        this.position.x + 50 * this.attackHitBox.dir,
+        (this.position.x + 50) * this.attackHitBox.dir,
         this.position.y,
         this.attackHitBox.width,
         this.attackHitBox.height
       );
+    }
+  }
+
+  deathAnimation() {
+    this.framesElapsed++;
+    if (this.framesElapsed % this.framesHold === 0) {
     }
   }
 
@@ -85,8 +95,10 @@ class Sprite {
         this.row === this.frames.y - 1 &&
         this.column === this.frames.x - 1
       ) {
-        this.row = 0;
-        this.column = 0;
+        if (!this.dead) {
+          this.row = 0;
+          this.column = 0;
+        }
       }
     }
 
@@ -94,7 +106,6 @@ class Sprite {
       (this.hitFrame !== 99 && this.column >= this.hitFrame - 1) ||
       this.row >= this.hitFrame - 1
     ) {
-      console.log("hit");
       // this.renderAttackHitBox("active");
       if (
         (this.position.y <= player.position.y &&
@@ -123,19 +134,33 @@ class Sprite {
       }
       enemies.forEach((enemy) => {
         if (
-          (this.position.y + this.attackHitBox.height <=
+          (player.position.y + this.attackHitBox.height <=
             enemy.position.y + enemy.hitbox.height &&
-            this.position.y + this.attackHitBox.height >= enemy.position.y) ||
-          (this.position.y >= enemy.position.y &&
-            this.position.y <= enemy.position.y + enemy.hitbox.height)
+            player.position.y + this.attackHitBox.height >= enemy.position.y) ||
+          (player.position.y >= enemy.position.y &&
+            player.position.y <= enemy.position.y + enemy.hitbox.height)
         ) {
           if (
-            this.position.x + this.attackHitBox.width >= enemy.position.x &&
-            this.position.x <= enemy.position.x
+            player.position.x + this.attackHitBox.width >= enemy.position.x &&
+            player.position.x <= enemy.position.x &&
+            this.attackHitBox.dir > 0
+            // player.dir > 0
+            // (this.position.x >= enemy.position.x &&
+            // this.position.x - this.attackHitBox.width <=
+            // enemy.position.x + enemy.hitbox.width)
           ) {
-            if (player.attacking) {
+            if (keys.space.pressed) {
               console.log("enemy dead");
-              enemy.dead = true;
+              enemy.die();
+            }
+          } else if (
+            player.position.x - this.attackHitBox.width <= enemy.position.x &&
+            player.position.x >= enemy.position.x &&
+            this.attackHitBox.dir < 0
+          ) {
+            if (keys.space.pressed) {
+              console.log("enemy dead");
+              enemy.die();
             }
           }
         }
@@ -237,6 +262,7 @@ class Player extends Sprite {
   update() {
     this.draw();
 
+    this.attack();
     // ctx.fillStyle = "red";
     // ctx.globalalpha = 0.2;
     // ctx.fillRect(this.position.x, this.position.y, this.img.width * this.scale, this.img.height/this.frames * this.scale);
@@ -247,7 +273,6 @@ class Player extends Sprite {
     this.velocity.y += this.gravitySpeed;
     if (!this.dead) this.hitGround();
     this.getHit();
-    if (this.attacking) this.switchSprite("attack_right");
     this.position.y += this.velocity.y;
   }
 
@@ -265,8 +290,8 @@ class Player extends Sprite {
             this.position.x + this.hitbox.width <=
               enemy.position.x + enemy.hitbox.width)
         ) {
-          console.log("get hit");
           if (!enemy.dead) {
+            console.log("get hit");
             this.die();
             this.dead = true;
           }
@@ -282,7 +307,15 @@ class Player extends Sprite {
 
   attack() {
     // console.log(this.column);
+
     // this.switchSprite("attack_right");
+    if (this.attacking) {
+      if (this.lastKey == "a") {
+        this.switchSprite("attack_left");
+      } else if (this.lastKey == "d" || this.lastKey == null) {
+        this.switchSprite("attack_right");
+      }
+    }
   }
 
   standStill() {
@@ -301,6 +334,20 @@ class Player extends Sprite {
           this.hitFrame = 99;
           this.row = 0;
           this.column = 0;
+          this.offset = this.sprites.idle.offset;
+        }
+        break;
+      case "idle_left":
+        if (this.img !== this.sprites.idle_left.image) {
+          this.img = this.sprites.idle_left.image;
+          this.frames = {
+            x: this.sprites.idle_left.frames.x,
+            y: this.sprites.idle_left.frames.y,
+          };
+          this.hitFrame = 99;
+          this.row = 0;
+          this.column = 0;
+          this.offset = this.sprites.idle_left.offset;
         }
         break;
       case "run":
@@ -314,6 +361,7 @@ class Player extends Sprite {
           this.hitFrame = 99;
           this.row = 0;
           this.column = 0;
+          this.offset = this.sprites.run.offset;
         }
         break;
       case "run_left":
@@ -326,6 +374,7 @@ class Player extends Sprite {
           this.hitFrame = 99;
           this.row = 0;
           this.column = 0;
+          this.offset = this.sprites.run_left.offset;
         }
         break;
       case "attack_right":
@@ -339,6 +388,7 @@ class Player extends Sprite {
           this.attackHitBox = this.sprites.attack_right.attackHitBox;
           this.row = 0;
           this.column = 0;
+          this.offset = this.sprites.attack_right.offset;
         }
         break;
       case "attack_left":
@@ -349,9 +399,14 @@ class Player extends Sprite {
             y: this.sprites.attack_left.frames.y,
           };
           this.hitFrame = this.sprites.attack_left.hitFrame;
-          this.attackHitBox = this.sprites.attack_left.attackHitBox;
-          this.row = 0;
+          (this.attackHitBox = {
+            dir: this.sprites.attack_left.attackHitBox.dir,
+            width: this.position.x,
+            height: this.sprites.attack_left.attackHitBox.height,
+          }),
+            (this.row = 0);
           this.column = 0;
+          this.offset = this.sprites.attack_left.offset;
         }
     }
   }
@@ -428,12 +483,13 @@ class Enemy extends Sprite {
   }
 
   update() {
+    if (this.dead) this.velocity.x = 0;
+    if (this.dead) this.switchEnemySprite("dead");
     this.draw();
 
     // ctx.fillStyle = "red";
     // ctx.globalalpha = 0.2;
     // ctx.fillRect(this.position.x, this.position.y, this.img.width * this.scale, this.img.height/this.frames * this.scale);
-
     this.animateFrames();
     this.position.x += this.velocity.x;
     if (!this.grounded) this.gravitySpeed += this.gravity;
@@ -442,23 +498,19 @@ class Enemy extends Sprite {
     this.position.y += this.velocity.y;
     this.enemyMovement();
     this.checkDistance();
-    if (this.dead) {
-      this.velocity.x = 0;
-      setTimeout(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }, 1000);
-    }
     // this.attack();
   }
 
   die() {
     this.dead = true;
+    this.switchEnemySprite("dead");
+    console.log("enemy has died");
   }
 
   attack(dis) {
-    console.log(dis);
     platforms.forEach((platform) => {
       if (
+        !this.dead &&
         this.position.x > platform.position.x &&
         this.position.x + this.hitbox.width <
           platform.position.x + tileSize * platform.tiles
@@ -479,6 +531,7 @@ class Enemy extends Sprite {
   enemyMovement() {
     platforms.forEach((platform) => {
       if (
+        !this.dead &&
         this.position.x > platform.position.x &&
         this.position.x + this.width <
           platform.position.x + tileSize * platform.tiles
@@ -489,6 +542,8 @@ class Enemy extends Sprite {
             : (this.velocity.x = -1);
         }
       } else if (
+        !this.dead &&
+        !this.attacking &&
         this.position.x >= platform.position.x &&
         this.position.x + this.width ==
           platform.position.x + tileSize * platform.tiles
@@ -499,13 +554,25 @@ class Enemy extends Sprite {
           this.velocity.x = -1;
           this.switchEnemySprite("left");
         }, 1000);
-      } else if (this.position.x == platform.position.x) {
+      } else if (
+        !this.dead &&
+        !this.attacking &&
+        this.position.x == platform.position.x
+      ) {
         this.velocity.x = 0;
         setTimeout(() => {
           this.direction = "right";
           this.velocity.x = 1;
           this.switchEnemySprite("right");
         }, 1000);
+      } else if (
+        (!this.dead &&
+          this.attacking &&
+          this.position.x == platform.position.x) ||
+        this.position.x + this.hitbox.width ==
+          platform.position.x + tileSize * platform.tiles
+      ) {
+        this.velocity.x = 0;
       }
     });
   }
@@ -564,6 +631,18 @@ class Enemy extends Sprite {
           this.attacking = true;
         }
         break;
+      case "dead":
+        console.log("dead switch");
+        if (this.img !== this.sprites.dead.image) {
+          this.img = this.sprites.dead.image;
+          this.frames = {
+            x: this.sprites.dead.frames.x,
+            y: this.sprites.dead.frames.y,
+          };
+          this.hitFrame = 99;
+          this.row = 0;
+          this.column = 0;
+        }
     }
   }
 
@@ -574,12 +653,7 @@ class Enemy extends Sprite {
     } else if (player.position.x > this.position.x + this.hitbox.width) {
       distance = player.position.x - (this.position.x + this.hitbox.width);
     }
-    if (
-      Math.abs(distance) <= 200 &&
-      player.position.y + player.hitbox.height >= this.position.y &&
-      player.position.y + player.hitbox.height <=
-        this.position.y + this.hitbox.height + 10
-    ) {
+    if (Math.abs(distance) <= 100) {
       this.attack(distance);
     } else {
       this.attacking = false;

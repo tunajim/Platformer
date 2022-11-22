@@ -34,13 +34,13 @@ function animate() {
   drawPlatforms();
   platform.drawBox();
 
-  if (keys.w.pressed) player.charged = false;
+  // if (keys.w.pressed) player.charged = false;
 
   checkPlayerPosition();
-  listenForCharge();
   player.update();
   enemies.forEach((enemy) => {
-    if (!enemy.dead) enemy.update();
+    console.log(enemy.dead);
+    enemy.update();
   });
   let game = window.requestAnimationFrame(animate);
   checkWin(game);
@@ -126,6 +126,7 @@ function checkKeyup(e) {
       player.charged = false;
     case " ":
       keys.space.pressed = false;
+      player.attacking = false;
       player.switchSprite("idle");
       player.update();
     // player.column = 0;
@@ -136,18 +137,18 @@ function checkKeyup(e) {
 function checkPlayerPosition() {
   //Check Right movements
   if (keys.d.pressed && player.lastKey === "d") {
-    if (player.position.x < 200) {
+    if (player.position.x < 400) {
       player.velocity.x = 3;
       player.switchSprite("run");
-    } else if (player.position.x > 200) {
+    } else if (player.position.x > 400) {
       player.velocity.x = 0;
       player.switchSprite("run");
     }
   } else if (keys.a.pressed && player.lastKey === "a") {
-    if (player.position.x >= 100) {
+    if (player.position.x > 300) {
       player.velocity.x = -3;
       player.switchSprite("run_left");
-    } else if (player.position.x < 100) {
+    } else if (player.position.x <= 300) {
       player.velocity.x = 0;
       player.switchSprite("run_left");
     }
@@ -163,7 +164,11 @@ function checkPlayerPosition() {
   }
 
   if (!keys.d.pressed && !keys.a.pressed && !keys.space.pressed) {
-    player.switchSprite("idle");
+    if(player.lastKey == "d" || player.lastKey == null){
+      player.switchSprite("idle");
+    } else if (player.lastKey == "a") {
+      player.switchSprite("idle_left");
+    }
   }
 }
 
@@ -181,7 +186,7 @@ function checkForJump() {
 }
 
 function moveScreen() {
-  if (player.position.x > 200 && player.lastKey === "d") {
+  if (player.position.x >= 400 && player.lastKey === "d") {
     if (keys.d.pressed) {
       platforms.forEach((platform) => {
         platform.position.x -= 3;
@@ -191,7 +196,7 @@ function moveScreen() {
       });
       parallaxBackground(-1);
     }
-  } else if (player.position.x < 100 && player.lastKey === "a") {
+  } else if (player.position.x < 300 && player.lastKey === "a") {
     if (keys.a.pressed) {
       platforms.forEach((platform) => {
         platform.position.x += 3;
@@ -204,16 +209,6 @@ function moveScreen() {
   }
 }
 
-function listenForCharge() {
-  if (keys.space.pressed && !player.charged) {
-    player.switchSprite("charge");
-  }
-  if (!keys.space.pressed && !keys.d.pressed && !keys.a.pressed) {
-    !player.charged
-      ? player.switchSprite("idle")
-      : player.switchSprite("idle_charged");
-  }
-}
 
 function activateSuperJump() {
   player.charged = true;

@@ -39,7 +39,6 @@ function animate() {
   checkPlayerPosition();
   player.update();
   enemies.forEach((enemy) => {
-    console.log(enemy.attacking);
     enemy.update();
   });
   let game = window.requestAnimationFrame(animate);
@@ -51,13 +50,11 @@ window.addEventListener("keydown", checkKeydown);
 window.addEventListener("keyup", checkKeyup);
 
 // prevent scroll on spacebar press
-window.addEventListener('keydown', function(e) {
-  console.log(e);
-  if(e.key == " ") {
+window.addEventListener("keydown", function (e) {
+  if (e.key == " ") {
     e.preventDefault();
   }
 });
-
 
 let chargeUp;
 function checkWin(game) {
@@ -91,7 +88,7 @@ function drawPlatforms() {
   });
   playerPlatforms.forEach((platform) => {
     platform.drawSprite();
-  })
+  });
 }
 
 function checkKeydown(e) {
@@ -139,7 +136,7 @@ function checkKeyup(e) {
     case " ":
       keys.space.pressed = false;
       player.attacking = false;
-      if(!keys.a.pressed && !keys.d.pressed) player.switchSprite("idle");
+      if (!keys.a.pressed && !keys.d.pressed) player.switchSprite("idle");
       player.update();
     // player.column = 0;
     // player. row = 0;
@@ -151,18 +148,26 @@ function checkPlayerPosition() {
   if (keys.d.pressed && player.lastKey === "d") {
     if (player.position.x < 400) {
       player.velocity.x = 3;
-      player.switchSprite("run");
+      !player.attacking
+        ? player.switchSprite("run")
+        : player.switchSprite("attack_right");
     } else if (player.position.x >= 400) {
       player.velocity.x = 0;
-      player.switchSprite("run");
+      !player.attacking
+        ? player.switchSprite("run")
+        : player.switchSprite("attack_right");
     }
   } else if (keys.a.pressed && player.lastKey === "a") {
     if (player.position.x > 300) {
       player.velocity.x = -3;
-      player.switchSprite("run_left");
+      !player.attacking
+        ? player.switchSprite("run_left")
+        : player.switchSprite("attack_left");
     } else if (player.position.x <= 300) {
       player.velocity.x = 0;
-      player.switchSprite("run_left");
+      !player.attacking
+        ? player.switchSprite("run_left")
+        : player.switchSprite("attack_left");
     }
   }
 
@@ -176,7 +181,7 @@ function checkPlayerPosition() {
   }
 
   if (!keys.d.pressed && !keys.a.pressed && !keys.space.pressed) {
-    if(player.lastKey == "d" || player.lastKey == null){
+    if (player.lastKey == "d" || player.lastKey == null) {
       player.switchSprite("idle");
     } else if (player.lastKey == "a") {
       player.switchSprite("idle_left");
@@ -205,7 +210,7 @@ function moveScreen() {
       });
       playerPlatforms.forEach((platform) => {
         platform.position.x -= 3;
-      })
+      });
       enemies.forEach((enemy) => {
         enemy.position.x -= 3;
       });
@@ -218,7 +223,7 @@ function moveScreen() {
       });
       playerPlatforms.forEach((platform) => {
         platform.position.x += 3;
-      })
+      });
       enemies.forEach((enemy) => {
         enemy.position.x += 3;
       });
@@ -226,7 +231,6 @@ function moveScreen() {
     }
   }
 }
-
 
 function activateSuperJump() {
   player.charged = true;

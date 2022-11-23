@@ -202,6 +202,46 @@ const platforms = [
     imageSrc: "spritesheet/platforms/flat-platform.png",
     tiles: 10,
   }),
+  new Platform({
+    position: {
+      x: 3900,
+      y: canvas.height - tileSize - 300,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 10,
+  }),
+  new Platform({
+    position: {
+      x: 4900,
+      y: canvas.height - tileSize - 100,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 2,
+  }),
+  new Platform({
+    position: {
+      x: 5100,
+      y: canvas.height - tileSize - 100,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 2,
+  }),
+  new Platform({
+    position: {
+      x: 5500,
+      y: canvas.height - tileSize - 300,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 5,
+  }),
+  new Platform({
+    position: {
+      x: 5700,
+      y: canvas.height - tileSize - 100,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 10,
+  }),
 ];
 
 const playerPlatforms = [
@@ -244,6 +284,102 @@ const playerPlatforms = [
     },
     imageSrc: "spritesheet/platforms/flat-platform.png",
     tiles: 1,
+  }),
+  new Platform({
+    position: {
+      x: 3900,
+      y: canvas.height - tileSize,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 10,
+  }),
+  new Platform({
+    position: {
+      x: 4500,
+      y: canvas.height - tileSize - 100,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 1,
+  }),
+  new Platform({
+    position: {
+      x: 4600,
+      y: canvas.height - tileSize - 200,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 1,
+  }),
+  new Platform({
+    position: {
+      x: 4700,
+      y: canvas.height - tileSize - 300,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 1,
+  }),
+  new Platform({
+    position: {
+      x: 4800,
+      y: canvas.height - tileSize - 400,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 1,
+  }),
+  new Platform({
+    position: {
+      x: 5200,
+      y: canvas.height - tileSize - 200,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 1,
+  }),
+  new Platform({
+    position: {
+      x: 5200,
+      y: canvas.height - tileSize - 350,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 1,
+  }),
+  new Platform({
+    position: {
+      x: 5300,
+      y: canvas.height - tileSize - 350,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 1,
+  }),
+  new Platform({
+    position: {
+      x: 5400,
+      y: canvas.height - tileSize - 350,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 1,
+  }),
+  new Platform({
+    position: {
+      x: 5500,
+      y: canvas.height - tileSize - 100,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 4,
+  }),
+  new Platform({
+    position: {
+      x: 5700,
+      y: canvas.height - tileSize - 300,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 10,
+  }),
+  new Platform({
+    position: {
+      x: 6425,
+      y: canvas.height - tileSize - 250,
+    },
+    imageSrc: "spritesheet/platforms/flat-platform.png",
+    tiles: 3,
   }),
 ];
 
@@ -352,6 +488,106 @@ const enemies = [
     position: {
       x: 3500,
       y: 0,
+    },
+    velocity: {
+      x: 0,
+      y: 0,
+    },
+    imageSrc: "spritesheet/reaper-right/idle.png",
+    frames: {
+      x: 4,
+      y: 1,
+    },
+    scale: 2,
+    offset: {
+      x: -60,
+      y: -20,
+    },
+    hitbox: {
+      width: 75,
+      height: 150,
+    },
+    sprites: enemySprites
+  }),
+  new Enemy({
+    position: {
+      x: 4000,
+      y: 0,
+    },
+    velocity: {
+      x: 0,
+      y: 0,
+    },
+    imageSrc: "spritesheet/reaper-right/idle.png",
+    frames: {
+      x: 4,
+      y: 1,
+    },
+    scale: 2,
+    offset: {
+      x: -60,
+      y: -20,
+    },
+    hitbox: {
+      width: 75,
+      height: 150,
+    },
+    sprites: enemySprites
+  }),
+  new Enemy({
+    position: {
+      x: 4900,
+      y: canvas.height - tileSize - 150 - 100,
+    },
+    velocity: {
+      x: 0,
+      y: 0,
+    },
+    imageSrc: "spritesheet/reaper-right/idle.png",
+    frames: {
+      x: 4,
+      y: 1,
+    },
+    scale: 2,
+    offset: {
+      x: -60,
+      y: -20,
+    },
+    hitbox: {
+      width: 75,
+      height: 150,
+    },
+    sprites: enemySprites
+  }),
+  new Enemy({
+    position: {
+      x: 5500,
+      y: canvas.height - tileSize - 150 - 400,
+    },
+    velocity: {
+      x: 0,
+      y: 0,
+    },
+    imageSrc: "spritesheet/reaper-right/idle.png",
+    frames: {
+      x: 4,
+      y: 1,
+    },
+    scale: 2,
+    offset: {
+      x: -60,
+      y: -20,
+    },
+    hitbox: {
+      width: 75,
+      height: 150,
+    },
+    sprites: enemySprites
+  }),
+  new Enemy({
+    position: {
+      x: 5700,
+      y: canvas.height - tileSize - 150 - 300,
     },
     velocity: {
       x: 0,

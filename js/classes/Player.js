@@ -520,12 +520,12 @@ class Enemy extends Sprite {
     this.hitGround();
     this.position.y += this.velocity.y;
 
+    this.enemyMovement();
     if (Math.abs(this.distance) < 200) {
       this.attack(this.checkDistance());
     } else {
       this.attacking = false;
     }
-    this.enemyMovement();
     // this.attack();
   }
 
@@ -544,13 +544,17 @@ class Enemy extends Sprite {
           platform.position.x + tileSize * platform.tiles
       ) {
         if (dis < 0) {
+          this.attacking = true;
+          this.direction = "left";
           this.switchEnemySprite("attack_left");
-          this.velocity.x = -1;
-          this.attacking = true;
+          this.enemyMovement();
+          // this.velocity.x = -2;
         } else if (dis > 0) {
-          this.switchEnemySprite("attack_right");
-          this.velocity.x = 1;
           this.attacking = true;
+          this.direction = "right";
+          this.switchEnemySprite("attack_right");
+          this.enemyMovement();
+          // this.velocity.x = 2;
         }
       }
     });
@@ -560,6 +564,7 @@ class Enemy extends Sprite {
     platforms.forEach((platform) => {
       if (
         !this.dead &&
+        !this.attacking &&
         this.position.x > platform.position.x &&
         this.position.x + this.width <
           platform.position.x + tileSize * platform.tiles
@@ -572,7 +577,7 @@ class Enemy extends Sprite {
       } else if (
         !this.dead &&
         !this.attacking &&
-        this.position.x >= platform.position.x &&
+        this.position.x > platform.position.x &&
         this.position.x + this.width ==
           platform.position.x + tileSize * platform.tiles
       ) {
@@ -590,13 +595,27 @@ class Enemy extends Sprite {
         this.velocity.x = 1;
         this.switchEnemySprite("right");
       } else if (
-        (!this.dead &&
-          this.attacking &&
-          this.position.x == platform.position.x) ||
-        this.position.x + this.hitbox.width ==
-          platform.position.x + tileSize * platform.tiles
+        !this.dead &&
+        this.attacking
+        // this.position.x  <= platform.position.x + 20 &&
+        // this.position.x  >= platform.position.x
       ) {
-        this.velocity.x = 0;
+        if (
+          this.position.x == platform.position.x ||
+          this.position.x + this.hitbox.width ==
+            platform.position.x + tileSize * platform.tiles
+        ) {
+          console.log("stop");
+          this.velocity.x = 0;
+        } else if (
+          this.position.x + this.hitbox.width <
+            platform.position.x + tileSize * platform.tiles  &&
+          this.position.x > platform.position.x
+        ) {
+          this.direction === "right"
+            ? (this.velocity.x = 1)
+            : (this.velocity.x = -1);
+        }
       }
     });
   }

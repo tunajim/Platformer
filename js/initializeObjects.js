@@ -638,3 +638,25 @@ const backgrounds = [
     image: document.getElementById("p5"),
   }),
 ];
+
+const finishLine = new Finishline ({
+  position: {
+    x: 5550,
+    y: canvas.height - tileSize - 225,
+  },
+  imageSrc: "spritesheet/blood_moon_tower.png",
+  frames: {
+    x: 11,
+    y: 1
+  },
+  scale: 1,
+  offset: {
+    x: 0,
+    y: 0
+  },
+  hitbox: {
+    width: 100,
+    height: 100
+  }
+
+});

@@ -11,6 +11,8 @@ player.load();
 enemies.forEach((enemy) => {
   enemy.load();
 });
+finishLine.load();
+console.log(finishLine);
 let keys = {
   a: { pressed: false },
   d: { pressed: false },
@@ -37,6 +39,7 @@ function animate() {
   // if (keys.w.pressed) player.charged = false;
 
   checkPlayerPosition();
+  finishLine.update();
   player.update();
   enemies.forEach((enemy) => {
     enemy.update();
@@ -60,11 +63,36 @@ let chargeUp;
 function checkWin(game) {
   if (player.dead) {
     window.cancelAnimationFrame(game);
-    endGame();
+    gameover();
   }
+  if(player.position.x + player.hitbox.width >= finishLine.position.x &&
+      player.position.x <= finishLine.position.x + finishLine.hitbox.width &&
+      player.position.y <= finishLine.position.y + finishLine.hitbox.height &&
+      player.position.y + player.hitbox.height >= finishLine.position.y 
+    ){
+      console.log("you won");
+      winGame();
+    }
+
 }
 
-function endGame() {
+function winGame() {
+  let overlay = document.getElementsByClassName("overlay")[0];
+  overlay.classList.add("active");
+  overlay.style.backgroundColor = "#04BF8A";
+
+  let header = overlay.getElementsByTagName("h2")[0];
+  header.textContent = "You Won!";
+
+  let caption = overlay.getElementsByTagName("p")[0];
+  caption.textContent = "Congratulations, you found your way!"
+
+  
+
+  console.log(header);
+}
+
+function gameover() {
   let overlay = document.getElementsByClassName("overlay")[0];
   overlay.classList.add("active");
 }
@@ -89,6 +117,10 @@ function drawPlatforms() {
   playerPlatforms.forEach((platform) => {
     platform.drawSprite();
   });
+}
+
+function drawFinishLine() {
+  finishLine.update();
 }
 
 function checkKeydown(e) {
@@ -214,6 +246,7 @@ function moveScreen() {
       enemies.forEach((enemy) => {
         enemy.position.x -= 3;
       });
+      finishLine.position.x -= 3;
       parallaxBackground(-1);
     }
   } else if (player.position.x < 300 && player.lastKey === "a") {
@@ -227,6 +260,7 @@ function moveScreen() {
       enemies.forEach((enemy) => {
         enemy.position.x += 3;
       });
+      finishLine.position.x += 3;
       parallaxBackground(1);
     }
   }

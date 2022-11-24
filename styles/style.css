@@ -1,7 +1,14 @@
-html {
+*{
     margin: 0;
     padding: 0;
 }
+
+html {
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+}
+
 
 body {
     background: black;
@@ -16,6 +23,91 @@ header {
     justify-content: center;
     align-content: center;
     align-items: center;
+    height: 12rem;
+
+}
+
+h1 {
+    font-size: 5em;
+    margin-top: none;
+    padding: none;
+}
+
+h2 {
+}
+
+.instructions-container {
+    background-color: rgb(21, 21, 21);
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+.instructions-container img {
+    width: 10rem;
+}
+
+.game-objective {
+    margin-left: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.movement-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+}
+
+.w, .a, .d, .space{
+    display: flex;
+    gap: 2rem;
+}
+
+.key {
+    border: 2px solid white;
+    border-radius: 5px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+}
+
+.space-bar {
+    width: 200px;
+    height: 50px;
+    border: 2px solid white;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.start-game-container{
+    display: flex;
+    margin: auto;
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+}
+
+.start-game-container button {
+    background-color: none;
+    color: rgb(0, 0, 0);
+    padding: 2rem 4rem 2rem 4rem;
+    font-size: 2em;
+    font-family: monospace;
+    font-weight: 900;
+    border: none;
+    border-radius: 5px;
+}
+
+.start-game-container button:hover {
+    background-color: rgb(198, 198, 198);
 }
 
 .flipped {
@@ -49,6 +141,7 @@ header {
     justify-content: center;
     align-items: center;
     font-family: monospace;
+    gap: 2rem;
     /* margin-top: 1rem; */
 }
 
@@ -60,6 +153,9 @@ header {
     font-size: 3em;
 }
 
+.overlay.active button {
+    padding: 1rem 2rem 1rem 2rem;
+}
 
 .backgrounds {
     display: none;

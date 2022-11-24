@@ -30,7 +30,7 @@ class Sprite {
   }
   load() {
     this.img.onload = () => {
-      console.log("player-sprite loaded");
+      console.log("sprite loaded");
     };
   }
   draw() {

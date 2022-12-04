@@ -436,6 +436,31 @@ const enemySprites = {
 const enemies = [
   new Enemy({
     position: {
+      x: 500,
+      y: canvas.height - 500,
+    },
+    velocity: {
+      x: 0,
+      y: 0,
+    },
+    imageSrc: "spritesheet/reaper-right/idle.png",
+    frames: {
+      x: 4,
+      y: 1,
+    },
+    scale: 2,
+    offset: {
+      x: -60,
+      y: -20,
+    },
+    hitbox: {
+      width: 75,
+      height: 150,
+    },
+    sprites: enemySprites    
+  }),
+  new Enemy({
+    position: {
       x: 2800,
       y: canvas.height - 500,
     },

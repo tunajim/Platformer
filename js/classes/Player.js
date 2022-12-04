@@ -21,7 +21,7 @@ class Sprite {
     this.row = 0;
     this.column = 0;
     this.framesElapsed = 0;
-    this.framesHold = 10;
+    this.framesHold = 1;
     this.offset = offset;
     this.scale = scale;
     this.hitbox = hitbox;
@@ -107,6 +107,12 @@ class Sprite {
       this.row >= this.hitFrame - 1
     ) {
       // this.renderAttackHitBox("active");
+      if(player.attacking) {
+        playSound("attack");
+      } else {
+        playSound("enemy_attack");
+      }
+
       if (
         (this.position.y <= player.position.y &&
           this.position.y + this.hitbox.height >= player.position.y) ||
@@ -200,13 +206,13 @@ class Player extends Sprite {
     });
     this.lastKey;
     this.jumping = false;
-    this.gravity = 0.02;
+    this.gravity = 0.06;
     this.gravitySpeed = 0;
     this.velocity = velocity;
     // this.row = 0;
     // this.column = 0;
     this.framesElapsed = 0;
-    this.framesHold = 15;
+    this.framesHold = 10;
     this.sprites = sprites;
     this.charged = false;
     this.grounded = false;
@@ -221,7 +227,8 @@ class Player extends Sprite {
 
   jump() {
     this.gravitySpeed = 0;
-    this.velocity.y = -10;
+    this.velocity.y = -14;
+    playSound("jump");
     this.grounded = false;
   }
 
@@ -350,7 +357,7 @@ class Player extends Sprite {
           this.row = 0;
           this.column = 0;
           this.offset = this.sprites.idle.offset;
-          this.framesHold = 15;
+          this.framesHold = 8;
         }
         break;
       case "idle_left":
@@ -364,7 +371,7 @@ class Player extends Sprite {
           this.row = 0;
           this.column = 0;
           this.offset = this.sprites.idle_left.offset;
-          this.framesHold = 15;
+          this.framesHold = 8;
         }
         break;
       case "run":
@@ -379,7 +386,7 @@ class Player extends Sprite {
           this.row = 0;
           this.column = 0;
           this.offset = this.sprites.run.offset;
-          this.framesHold = 15;
+          this.framesHold = 8;
         }
         break;
       case "run_left":
@@ -393,7 +400,7 @@ class Player extends Sprite {
           this.row = 0;
           this.column = 0;
           this.offset = this.sprites.run_left.offset;
-          this.framesHold = 15;
+          this.framesHold = 8;
         }
         break;
       case "attack_right":
@@ -408,7 +415,8 @@ class Player extends Sprite {
           this.row = 0;
           this.column = 0;
           this.offset = this.sprites.attack_right.offset;
-          this.framesHold = 7;
+          this.framesHold = 3;
+          playSound("attack_charge");
         }
         break;
       case "attack_left":
@@ -427,7 +435,7 @@ class Player extends Sprite {
             (this.row = 0);
           this.column = 0;
           this.offset = this.sprites.attack_left.offset;
-          this.framesHold = 7;
+          this.framesHold = 3;
         }
     }
   }
@@ -465,7 +473,7 @@ class Enemy extends Sprite {
     this.row = 0;
     this.column = 0;
     this.framesElapsed = 0;
-    this.framesHold = 20;
+    this.framesHold = 10;
     this.sprites = sprites;
     this.charged = false;
     this.grounded = false;
@@ -548,13 +556,11 @@ class Enemy extends Sprite {
           this.direction = "left";
           this.switchEnemySprite("attack_left");
           this.enemyMovement();
-          // this.velocity.x = -2;
         } else if (dis > 0) {
           this.attacking = true;
           this.direction = "right";
           this.switchEnemySprite("attack_right");
           this.enemyMovement();
-          // this.velocity.x = 2;
         }
       }
     });
@@ -565,8 +571,8 @@ class Enemy extends Sprite {
       if (
         !this.dead &&
         !this.attacking &&
-        this.position.x > platform.position.x &&
-        this.position.x + this.width <
+        this.position.x - this.velocity.x > platform.position.x &&
+        this.position.x + this.width + this.velocity.x <
           platform.position.x + tileSize * platform.tiles
       ) {
         if (!this.attacking) {
@@ -578,7 +584,7 @@ class Enemy extends Sprite {
         !this.dead &&
         !this.attacking &&
         this.position.x > platform.position.x &&
-        this.position.x + this.width ==
+        this.position.x + this.width + this.velocity.x ==
           platform.position.x + tileSize * platform.tiles
       ) {
         this.velocity.x = 0;
@@ -588,7 +594,7 @@ class Enemy extends Sprite {
       } else if (
         !this.dead &&
         !this.attacking &&
-        this.position.x == platform.position.x
+        this.position.x - this.velocity.x == platform.position.x
       ) {
         this.velocity.x = 0;
         this.direction = "right";
@@ -609,7 +615,7 @@ class Enemy extends Sprite {
           this.velocity.x = 0;
         } else if (
           this.position.x + this.hitbox.width <
-            platform.position.x + tileSize * platform.tiles  &&
+            platform.position.x + tileSize * platform.tiles &&
           this.position.x > platform.position.x
         ) {
           this.direction === "right"

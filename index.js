@@ -8,6 +8,8 @@ canvas.height = 576;
 let loaded = false;
 
 player.load();
+let plSpeed = 5;
+
 enemies.forEach((enemy) => {
   enemy.load();
 });
@@ -24,30 +26,49 @@ let keys = {
 //ANIMATE
 /* ========================================== */
 
-function animate() {
-  ctx.fillStyle = "white";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+var frameCount = 0;
+var fps, fpsInterval, startTime, now, then, elapsed;
 
-  player.velocity.x = 0;
-
-  moveScreen();
-
-  drawBackgrounds();
-  drawPlatforms();
-  // platform.drawBox();
-
-  // if (keys.w.pressed) player.charged = false;
-
-  checkPlayerPosition();
-  finishLine.update();
-  player.update();
-  enemies.forEach((enemy) => {
-    enemy.update();
-  });
-  let game = window.requestAnimationFrame(animate);
-  checkWin(game);
+function startAnimating(fps) {
+  fpsInterval = 1000 / fps;
+  then = Date.now();
+  startTime = then;
+  animate();
 }
-animate();
+
+function animate() {
+  let game = window.requestAnimationFrame(animate);
+
+  now = Date.now();
+  elapsed = now - then;
+
+  if (elapsed > fpsInterval) {
+    then = now - (elapsed % fpsInterval);
+
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    player.velocity.x = 0;
+
+    moveScreen();
+
+    drawBackgrounds();
+    drawPlatforms();
+    // platform.drawBox();
+
+    // if (keys.w.pressed) player.charged = false;
+
+    checkPlayerPosition();
+    finishLine.update();
+    player.update();
+    enemies.forEach((enemy) => {
+      enemy.update();
+    });
+    checkWin(game);
+  }
+}
+
+startAnimating(54);
 
 window.addEventListener("keydown", checkKeydown);
 window.addEventListener("keyup", checkKeyup);
@@ -65,15 +86,15 @@ function checkWin(game) {
     window.cancelAnimationFrame(game);
     gameover();
   }
-  if(player.position.x + player.hitbox.width >= finishLine.position.x &&
-      player.position.x <= finishLine.position.x + finishLine.hitbox.width &&
-      player.position.y <= finishLine.position.y + finishLine.hitbox.height &&
-      player.position.y + player.hitbox.height >= finishLine.position.y 
-    ){
-      console.log("you won");
-      winGame();
-    }
-
+  if (
+    player.position.x + player.hitbox.width >= finishLine.position.x &&
+    player.position.x <= finishLine.position.x + finishLine.hitbox.width &&
+    player.position.y <= finishLine.position.y + finishLine.hitbox.height &&
+    player.position.y + player.hitbox.height >= finishLine.position.y
+  ) {
+    console.log("you won");
+    winGame();
+  }
 }
 
 function winGame() {
@@ -85,9 +106,7 @@ function winGame() {
   header.textContent = "You Won!";
 
   let caption = overlay.getElementsByTagName("p")[0];
-  caption.textContent = "Congratulations, you found your way!"
-
-  
+  caption.textContent = "Congratulations, you found your way!";
 
   console.log(header);
 }
@@ -179,7 +198,7 @@ function checkPlayerPosition() {
   //Check Right movements
   if (keys.d.pressed && player.lastKey === "d") {
     if (player.position.x < 400) {
-      player.velocity.x = 3;
+      player.velocity.x = plSpeed;
       !player.attacking
         ? player.switchSprite("run")
         : player.switchSprite("attack_right");
@@ -191,7 +210,7 @@ function checkPlayerPosition() {
     }
   } else if (keys.a.pressed && player.lastKey === "a") {
     if (player.position.x > 300) {
-      player.velocity.x = -3;
+      player.velocity.x = -plSpeed;
       !player.attacking
         ? player.switchSprite("run_left")
         : player.switchSprite("attack_left");
@@ -235,32 +254,33 @@ function checkForJump() {
 }
 
 function moveScreen() {
+  console.log(player.position.x);
   if (player.position.x >= 400 && player.lastKey === "d") {
     if (keys.d.pressed) {
       platforms.forEach((platform) => {
-        platform.position.x -= 3;
+        platform.position.x -= plSpeed;
       });
       playerPlatforms.forEach((platform) => {
-        platform.position.x -= 3;
+        platform.position.x -= plSpeed;
       });
       enemies.forEach((enemy) => {
-        enemy.position.x -= 3;
+        enemy.position.x -= plSpeed;
       });
-      finishLine.position.x -= 3;
+      finishLine.position.x -= plSpeed;
       parallaxBackground(-1);
     }
-  } else if (player.position.x < 300 && player.lastKey === "a") {
+  } else if (player.position.x <= 300 && player.lastKey === "a") {
     if (keys.a.pressed) {
       platforms.forEach((platform) => {
-        platform.position.x += 3;
+        platform.position.x += plSpeed;
       });
       playerPlatforms.forEach((platform) => {
-        platform.position.x += 3;
+        platform.position.x += plSpeed;
       });
       enemies.forEach((enemy) => {
-        enemy.position.x += 3;
+        enemy.position.x += plSpeed;
       });
-      finishLine.position.x += 3;
+      finishLine.position.x += plSpeed;
       parallaxBackground(1);
     }
   }
@@ -281,4 +301,35 @@ function createImage(imageSrc) {
   const image = new Image();
   image.src = imageSrc;
   return image;
+}
+
+let jump = new Audio("audio/jump75.wav");
+jump.volume = 0.2;
+
+let attackCharge = new Audio("audio/powerup85.wav");
+attackCharge.volume = .5;
+
+let attack = new Audio("audio/explosion112.wav");
+attack.volume = 1;
+
+let enemyAttack = new Audio("audio/laserShoot163.wav");
+enemyAttack.volume = .6;
+enemyAttack.playbackRate = .5;
+
+function playSound(sound) {
+  switch (sound) {
+    case "jump":
+      jump.play();
+      break;
+    case "attack_charge":
+      attackCharge.play();
+      break;
+    case "attack":
+      attack.play();
+      break;
+    case "enemy_attack":
+      enemyAttack.play();
+      break;
+
+  }
 }

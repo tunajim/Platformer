@@ -132,7 +132,6 @@ class Sprite {
             this.position.x + this.attackHitBox.width + 50 <=
               player.position.x + player.hitbox.width)
         ) {
-          console.log("attacked");
           enemies.forEach((enemy) => {
             if (!enemy.dead) player.die();
           });
@@ -156,7 +155,6 @@ class Sprite {
             // enemy.position.x + enemy.hitbox.width)
           ) {
             if (keys.space.pressed) {
-              console.log("enemy dead");
               enemy.die();
             }
           } else if (
@@ -165,7 +163,6 @@ class Sprite {
             this.attackHitBox.dir < 0
           ) {
             if (keys.space.pressed) {
-              console.log("enemy dead");
               enemy.die();
             }
           }
@@ -251,7 +248,7 @@ class Player extends Sprite {
         this.position.y + height <= platform.position.y &&
         this.position.y + height + this.velocity.y >= platform.position.y &&
         this.position.x + width >= platform.position.x &&
-        this.position.x <= platform.position.x + tileSize * platform.tiles
+        this.position.x + 12 <= platform.position.x + tileSize * platform.tiles
       ) {
         this.velocity.y = 0;
         this.grounded = true;
@@ -266,7 +263,7 @@ class Player extends Sprite {
         this.position.y + height <= platform.position.y &&
         this.position.y + height + this.velocity.y >= platform.position.y &&
         this.position.x + width >= platform.position.x &&
-        this.position.x <= platform.position.x + tileSize * platform.tiles
+        this.position.x + 12 <= platform.position.x + tileSize * platform.tiles
       ) {
         this.velocity.y = 0;
         this.grounded = true;
@@ -313,7 +310,6 @@ class Player extends Sprite {
               enemy.position.x + enemy.hitbox.width)
         ) {
           if (!enemy.dead) {
-            console.log("get hit");
             this.die();
             this.dead = true;
           }
@@ -323,14 +319,11 @@ class Player extends Sprite {
   }
 
   die() {
-    console.log("youve been killed");
     this.dead = true;
+    plDie.play();
   }
 
   attack() {
-    // console.log(this.column);
-
-    // this.switchSprite("attack_right");
     if (this.attacking) {
       if (this.lastKey == "a") {
         this.switchSprite("attack_left");
@@ -534,13 +527,12 @@ class Enemy extends Sprite {
     } else {
       this.attacking = false;
     }
-    // this.attack();
   }
 
   die() {
+    playSound("enemy_die");
     this.dead = true;
     this.switchEnemySprite("dead");
-    console.log("enemy has died");
   }
 
   attack(dis) {
@@ -611,7 +603,6 @@ class Enemy extends Sprite {
           this.position.x + this.hitbox.width ==
             platform.position.x + tileSize * platform.tiles
         ) {
-          console.log("stop");
           this.velocity.x = 0;
         } else if (
           this.position.x + this.hitbox.width <

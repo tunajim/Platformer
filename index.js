@@ -14,7 +14,6 @@ enemies.forEach((enemy) => {
   enemy.load();
 });
 finishLine.load();
-console.log(finishLine);
 let keys = {
   a: { pressed: false },
   d: { pressed: false },
@@ -80,7 +79,7 @@ window.addEventListener("keydown", function (e) {
   }
 });
 
-let chargeUp;
+
 function checkWin(game) {
   if (player.dead) {
     window.cancelAnimationFrame(game);
@@ -92,12 +91,13 @@ function checkWin(game) {
     player.position.y <= finishLine.position.y + finishLine.hitbox.height &&
     player.position.y + player.hitbox.height >= finishLine.position.y
   ) {
-    console.log("you won");
-    winGame();
+    winGame(game);
+    win.play();
   }
 }
 
-function winGame() {
+function winGame(game) {
+  window.cancelAnimationFrame(game);
   let overlay = document.getElementsByClassName("overlay")[0];
   overlay.classList.add("active");
   overlay.style.backgroundColor = "#04BF8A";
@@ -108,12 +108,27 @@ function winGame() {
   let caption = overlay.getElementsByTagName("p")[0];
   caption.textContent = "Congratulations, you found your way!";
 
-  console.log(header);
+  fadeAudio();
+}
+
+function fadeAudio() {
+  let bgAudio = document.getElementById("bg-music");
+
+  var fadeAudio = setInterval(function () {
+    // Only fade if past the fade out point or not at zero already
+    if (bgAudio.volume > 0.1) {
+      bgAudio.volume -= 0.1;
+    }
+    // When volume at zero stop all the intervalling
+    if (bgAudio.volume === 0.0) clearInterval(fadeAudio);
+  }, 200);
 }
 
 function gameover() {
   let overlay = document.getElementsByClassName("overlay")[0];
   overlay.classList.add("active");
+  player.die();
+  fadeAudio();
 }
 
 function startGame() {
@@ -254,7 +269,6 @@ function checkForJump() {
 }
 
 function moveScreen() {
-  console.log(player.position.x);
   if (player.position.x >= 400 && player.lastKey === "d") {
     if (keys.d.pressed) {
       platforms.forEach((platform) => {
@@ -303,19 +317,6 @@ function createImage(imageSrc) {
   return image;
 }
 
-let jump = new Audio("audio/jump75.wav");
-jump.volume = 0.2;
-
-let attackCharge = new Audio("audio/powerup85.wav");
-attackCharge.volume = .5;
-
-let attack = new Audio("audio/explosion112.wav");
-attack.volume = 1;
-
-let enemyAttack = new Audio("audio/laserShoot163.wav");
-enemyAttack.volume = .6;
-enemyAttack.playbackRate = .5;
-
 function playSound(sound) {
   switch (sound) {
     case "jump":
@@ -330,6 +331,7 @@ function playSound(sound) {
     case "enemy_attack":
       enemyAttack.play();
       break;
-
+    case "enemy_die":
+      enemyDie.play();
   }
 }

@@ -5,7 +5,8 @@ class Finishline extends Sprite{
         frames,
         scale,
         offset,
-        hitbox
+        hitbox,
+        framesHold
     }){
         super({
             position,
@@ -13,10 +14,12 @@ class Finishline extends Sprite{
             frames,
             scale,
             offset,
-            hitbox
+            hitbox,
+            framesHold,
         })
         this.img = new Image();
         this.img.src = imageSrc;
+        this.framesHold = 10;
         // this.img.width = this.img.naturalWidth;
         // this.img.height = this.img.naturalHeight;
     }

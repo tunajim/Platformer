@@ -2,6 +2,37 @@ const tileSize = 50;
 canvas.width = 1024;
 canvas.height = 576;
 
+let jump = new Audio("audio/jump75.wav");
+jump.preload = "auto";
+jump.volume = 0.2;
+
+
+let attackCharge = new Audio("audio/powerup85.wav");
+attackCharge.preload = "auto";
+attackCharge.volume = .5;
+
+let attack = new Audio("audio/explosion112.wav");
+attack.preload = "auto";
+attack.volume = 1;
+
+let enemyAttack = new Audio("audio/laserShoot163.wav");
+enemyAttack.preload = "auto";
+enemyAttack.volume = .5;
+enemyAttack.playbackRate = .7;
+
+let enemyDie = new Audio("audio/enemy_die.wav");
+enemyDie.preload = "auto";
+enemyDie.volume = .7
+
+let plDie = new Audio("audio/marioDeathSound.wav");
+plDie.preload = "auto";
+plDie.volume = 1;
+
+let win = new Audio("audio/OOT_Secret.wav");
+win.preload = "auto";
+
+
+
 const player = new Player({
   position: {
     x: 100,

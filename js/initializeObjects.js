@@ -9,7 +9,7 @@ jump.volume = 0.2;
 
 let attackCharge = new Audio("audio/powerup85.wav");
 attackCharge.preload = "auto";
-attackCharge.volume = .5;
+attackCharge.volume = .3;
 
 let attack = new Audio("audio/explosion112.wav");
 attack.preload = "auto";

@@ -107,7 +107,7 @@ class Sprite {
       this.row >= this.hitFrame - 1
     ) {
       // this.renderAttackHitBox("active");
-      if(player.attacking) {
+      if (player.attacking) {
         playSound("attack");
       } else {
         playSound("enemy_attack");
@@ -154,15 +154,16 @@ class Sprite {
             // this.position.x - this.attackHitBox.width <=
             // enemy.position.x + enemy.hitbox.width)
           ) {
-            if (keys.space.pressed) {
+            if (keys.space.pressed && !enemy.dead) {
               enemy.die();
+              enemy.dead = true;
             }
           } else if (
             player.position.x - this.attackHitBox.width <= enemy.position.x &&
             player.position.x >= enemy.position.x &&
             this.attackHitBox.dir < 0
           ) {
-            if (keys.space.pressed) {
+            if (keys.space.pressed && !enemy.dead) {
               enemy.die();
             }
           }
@@ -327,8 +328,10 @@ class Player extends Sprite {
     if (this.attacking) {
       if (this.lastKey == "a") {
         this.switchSprite("attack_left");
+        playSound("attack_charge");
       } else if (this.lastKey == "d" || this.lastKey == null) {
         this.switchSprite("attack_right");
+        playSound("attack_charge");
       }
     }
   }
@@ -409,7 +412,6 @@ class Player extends Sprite {
           this.column = 0;
           this.offset = this.sprites.attack_right.offset;
           this.framesHold = 3;
-          playSound("attack_charge");
         }
         break;
       case "attack_left":

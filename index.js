@@ -46,18 +46,13 @@ function animate() {
 
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
     player.velocity.x = 0;
 
     moveScreen();
-
     drawBackgrounds();
     drawPlatforms();
-    // platform.drawBox();
-
-    // if (keys.w.pressed) player.charged = false;
-
     checkPlayerPosition();
+
     finishLine.update();
     player.update();
     enemies.forEach((enemy) => {
@@ -115,11 +110,7 @@ function fadeAudio() {
   let bgAudio = document.getElementById("bg-music");
 
   var fadeAudio = setInterval(function () {
-    // Only fade if past the fade out point or not at zero already
-    if (bgAudio.volume > 0.1) {
-      bgAudio.volume -= 0.1;
-    }
-    // When volume at zero stop all the intervalling
+    if (bgAudio.volume > 0.1) bgAudio.volume -= 0.1;
     if (bgAudio.volume === 0.0) clearInterval(fadeAudio);
   }, 200);
 }

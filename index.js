@@ -1,4 +1,3 @@
-//Set up canvas
 const canvas = document.getElementsByTagName("canvas")[0];
 const ctx = canvas.getContext("2d");
 
@@ -95,13 +94,15 @@ function winGame(game) {
   window.cancelAnimationFrame(game);
   let overlay = document.getElementsByClassName("overlay")[0];
   overlay.classList.add("active");
-  overlay.style.backgroundColor = "#04BF8A";
+  overlay.style.color = "green";
+  overlay.style.backgroundColor = "black";
 
   let header = overlay.getElementsByTagName("h2")[0];
-  header.textContent = "You Won!";
+  header.textContent = "Congratulations!";
+  header.style.fontSize = "6em";
 
   let caption = overlay.getElementsByTagName("p")[0];
-  caption.textContent = "Congratulations, you found your way!";
+  caption.textContent = "You found your way!";
 
   fadeAudio();
 }
@@ -152,8 +153,6 @@ function checkKeydown(e) {
   switch (e.key) {
     case "w":
       keys.w.pressed = true;
-      // if(player.grounded) player.jumping = true;
-      // if(player.grounded) player.velocity.y = -20;
       if (player.grounded && !player.charged) player.jump();
       if (player.grounded && player.charged) player.superJump();
       player.charged = false;
@@ -169,13 +168,6 @@ function checkKeydown(e) {
     case " ":
       if (!player.attacking) player.attacking = true;
       keys.space.pressed = true;
-    // if (!player.charged && !keys.a.pressed && !keys.d.pressed) {
-    //   player.offset.y = -5;
-    //   player.offset.x = -25;
-    //   keys.space.pressed = true;
-    //   chargeUp = setTimeout(activateSuperJump, 1000);
-    //   player.switchSprite("charge");
-    // }
   }
 }
 
@@ -195,13 +187,10 @@ function checkKeyup(e) {
       player.attacking = false;
       if (!keys.a.pressed && !keys.d.pressed) player.switchSprite("idle");
       player.update();
-    // player.column = 0;
-    // player. row = 0;
   }
 }
 
 function checkPlayerPosition() {
-  //Check Right movements
   if (keys.d.pressed && player.lastKey === "d") {
     if (player.position.x < 400) {
       player.velocity.x = plSpeed;
@@ -246,18 +235,6 @@ function checkPlayerPosition() {
   }
 }
 
-function checkForJump() {
-  if (keys.w.pressed && player.grounded) {
-    player.velocity.y = -10;
-    player.grounded = false;
-    player.charged = false;
-  } else if (keys.w.pressed && player.grounded && player.charged) {
-    player.velocity.y = -30;
-    player.grounded = false;
-    player.jumping = true;
-    player.charged = false;
-  }
-}
 
 function moveScreen() {
   if (player.position.x >= 400 && player.lastKey === "d") {

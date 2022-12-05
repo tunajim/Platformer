@@ -5,12 +5,16 @@
 
 @font-face {
     font-family: Souls_Bold;
-    src: url("fonts/SoulsBold.ttf");
+    src: url("../fonts/SoulsBold.ttf");
 }
 
 @font-face {
     font-family: Souls;
-    src: url("fonts/Souls.ttf");
+    src: url("../fonts/Souls.ttf");
+}
+@font-face {
+    font-family: blocks;
+    src: url("../fonts/Nabla-Regular.ttf");
 }
 
 html {
@@ -26,24 +30,31 @@ body {
     flex-direction: column;
 }
 
+h1 {
+    font-family: Souls_Bold;
+}
+
 header {
-    color: white;
+    color: whitesmoke;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
     align-items: center;
     height: 12rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 
 }
 
 .header-link {
-    color: white;
+    color: whitesmoke;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-decoration: none;
+    gap: 1rem;
     font-weight: 100;
 }
 
@@ -52,14 +63,17 @@ h1 {
     font-size: 5em;
     margin-top: none;
     padding: none;
+    letter-spacing: .25em;
 }
 
 h2 {
+    font-family: Souls;
+    letter-spacing: 1em;
 }
 
 .instructions-container {
     background-color: rgb(21, 21, 21);
-    color: white;
+    color: whitesmoke;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     padding-top: 4rem;
@@ -89,7 +103,7 @@ h2 {
 }
 
 .key {
-    border: 2px solid white;
+    border: 2px solid whitesmoke;
     border-radius: 5px;
     width: 50px;
     height: 50px;
@@ -102,7 +116,7 @@ h2 {
 .space-bar {
     width: 200px;
     height: 50px;
-    border: 2px solid white;
+    border: 2px solid whitesmoke;
     border-radius: 5px;
     display: flex;
     justify-content: center;
@@ -141,7 +155,6 @@ h2 {
     height: 576px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 3rem;
     display: block;
 }
 
@@ -155,7 +168,8 @@ h2 {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: rgb(109, 71, 71);
+    background-color: rgb(0, 0, 0);
+    color: rgb(201, 53, 53);
     z-index: 100;
     display: flex;
     flex-direction: column;
@@ -168,10 +182,14 @@ h2 {
 
 .overlay.active h2 {
     font-size: 8em;
+    font-family: Souls_Bold;
+    letter-spacing: normal;
 }
 
 .overlay.active p {
     font-size: 3em;
+    font-family: Souls;
+    letter-spacing: normal;
 }
 
 .overlay.active button {
@@ -209,5 +227,9 @@ h2 {
 
 
 #works-cited ul {
-    color: white;
+    color: whitesmoke;
+}
+
+#works-cited h2 {
+    letter-spacing: normal;
 }

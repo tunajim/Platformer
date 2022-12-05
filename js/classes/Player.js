@@ -149,10 +149,6 @@ class Sprite {
             player.position.x + this.attackHitBox.width >= enemy.position.x &&
             player.position.x <= enemy.position.x &&
             this.attackHitBox.dir > 0
-            // player.dir > 0
-            // (this.position.x >= enemy.position.x &&
-            // this.position.x - this.attackHitBox.width <=
-            // enemy.position.x + enemy.hitbox.width)
           ) {
             if (keys.space.pressed && !enemy.dead) {
               enemy.die();
@@ -207,8 +203,6 @@ class Player extends Sprite {
     this.gravity = 0.06;
     this.gravitySpeed = 0;
     this.velocity = velocity;
-    // this.row = 0;
-    // this.column = 0;
     this.framesElapsed = 0;
     this.framesHold = 10;
     this.sprites = sprites;
@@ -225,7 +219,7 @@ class Player extends Sprite {
 
   jump() {
     this.gravitySpeed = 0;
-    this.velocity.y = -14;
+    this.velocity.y = -13;
     playSound("jump");
     this.grounded = false;
   }
@@ -238,7 +232,6 @@ class Player extends Sprite {
   }
 
   hitGround() {
-    // let ground = canvas.height - (this.img.height / this.frames) * this.scale;
     let ground;
 
     let height = this.hitbox.height;
@@ -253,9 +246,7 @@ class Player extends Sprite {
       ) {
         this.velocity.y = 0;
         this.grounded = true;
-        // this.jumping = false;
       } else {
-        // this.grounded = false;
       }
     });
 
@@ -268,31 +259,24 @@ class Player extends Sprite {
       ) {
         this.velocity.y = 0;
         this.grounded = true;
-        // this.jumping = false;
-      } else {
-        // this.grounded = false;
       }
     });
 
-    if (this.position.y + height > canvas.width) {
-      this.dead = true;
-    }
+    if (this.position.y + height > canvas.width) this.dead = true;
   }
 
   update() {
     this.draw();
-
     this.attack();
-    // ctx.fillStyle = "red";
-    // ctx.globalalpha = 0.2;
-    // ctx.fillRect(this.position.x, this.position.y, this.img.width * this.scale, this.img.height/this.frames * this.scale);
-
     this.animateFrames();
+
     this.position.x += this.velocity.x;
     if (!this.grounded) this.gravitySpeed += this.gravity;
     this.velocity.y += this.gravitySpeed;
+
     if (!this.dead) this.hitGround();
     this.getHit();
+
     this.position.y += this.velocity.y;
   }
 
@@ -486,7 +470,6 @@ class Enemy extends Sprite {
   }
 
   hitGround() {
-    // let ground = canvas.height - (this.img.height / this.frames) * this.scale;
     let ground;
 
     platforms.forEach((platform) => {
@@ -500,10 +483,7 @@ class Enemy extends Sprite {
       ) {
         this.velocity.y = 0;
         this.grounded = true;
-        // this.jumping = false;
-      } else {
-        // this.grounded = false;
-      }
+      } 
     });
   }
 
@@ -512,17 +492,12 @@ class Enemy extends Sprite {
     if (this.dead) this.switchEnemySprite("dead");
     this.distance = this.checkDistance();
     this.draw();
-
-    // ctx.fillStyle = "red";
-    // ctx.globalalpha = 0.2;
-    // ctx.fillRect(this.position.x, this.position.y, this.img.width * this.scale, this.img.height/this.frames * this.scale);
     this.animateFrames();
     this.position.x += this.velocity.x;
     if (!this.grounded) this.gravitySpeed += this.gravity;
     this.velocity.y += this.gravitySpeed;
     this.hitGround();
     this.position.y += this.velocity.y;
-
     this.enemyMovement();
     if (Math.abs(this.distance) < 200) {
       this.attack(this.checkDistance());
@@ -597,8 +572,6 @@ class Enemy extends Sprite {
       } else if (
         !this.dead &&
         this.attacking
-        // this.position.x  <= platform.position.x + 20 &&
-        // this.position.x  >= platform.position.x
       ) {
         if (
           this.position.x == platform.position.x ||

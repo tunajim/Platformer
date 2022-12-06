@@ -72,7 +72,20 @@ h2 {
 }
 
 footer {
-    
+
+}
+
+.button {
+    background-color: rgb(230, 219, 219);
+    border-radius: 10px;
+    border: none;
+    padding: 1rem 3rem 1rem 3rem;
+    font-size: 1.5em;
+    font-family: Souls;
+}
+
+.button:hover {
+    background-color: rgb(166, 165, 165);
 }
 
 .instructions-container {
@@ -105,6 +118,7 @@ footer {
     display: flex;
     gap: 2rem;
 }
+
 
 .key {
     border: 2px solid whitesmoke;
@@ -196,8 +210,14 @@ footer {
     letter-spacing: normal;
 }
 
-.overlay.active button {
-    padding: 1rem 2rem 1rem 2rem;
+
+@keyframes fadeIn {
+    0%{ opacity: 0;}
+    100% { opacity: 1;}
+}
+
+.overlay.active button, .overlay.active p, .overlay.active h2 {
+    animation: fadeIn 2s;
 }
 
 .backgrounds {
